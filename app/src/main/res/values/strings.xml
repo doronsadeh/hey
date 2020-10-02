@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name" translatable="false">Hey!</string>
-    <string name="range">Range (meters)</string>
-    <string name="users_in_range">0 users in range</string>
-    <string name="notification_title">Hey! is running</string>
+    <string name="range">Hailing Range</string>
+    <string name="users_in_range">0 people in range</string>
+    <string name="notification_title">Hailing people in range</string>
+    <string name="explanation_text">Hailing people in range</string>
     <string name="exit_app">Exit</string>
     <string name="monitor_service_is_not_running" translatable="false">Service not running</string>
     <string name="not_compatiable_with_your_device" translatable="false">App incompatiable with your device</string>
     <string name="your_network_connection_is_unstable" translatable="false">Your network connection is unstable</string>
     <string name="transient_network_error" translatable="false">Transient network error</string>
     <string name="no_network" translatable="false">No network</string>
+    <string name="meters" translatable="false">m</string>
 </resources>

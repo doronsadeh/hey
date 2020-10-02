@@ -14,6 +14,10 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     // we don't care if it's different fom last time as it only serves
     // to send FCM messages, and keep track of transient location
     public static String randomRecyclingIdentity = Utils.genStringUUID();
+
+    private int radiusMeters = 1000;
 
     private void validatePermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
@@ -102,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String action = getIntent().getAction();
-        
+
         if (null != action && action.equalsIgnoreCase(EXIT_APP_ACTION)) {
             Utils.sendAnalytics(mFirebaseAnalytics, "exit_app", "main_activity", "analytics");
             stopServices();
@@ -156,6 +162,43 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }).start();
                     } else {
+                        // Set initial range
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            ((SeekBar) findViewById(R.id.lookup_range_seekbar)).setProgress(radiusMeters, true);
+                        }
+
+                        // Set listener
+                        ((SeekBar) findViewById(R.id.lookup_range_seekbar)).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                radiusMeters = progress;
+                                ((TextView) findViewById(R.id.hail_distance)).setText(String.format("%s %s", progress, getString(R.string.meters)));
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                            }
+                        });
+
+                        TextView explanationText = findViewById(R.id.explanation);
+
+                        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+                        anim.setDuration(1500);
+                        anim.setStartOffset(20);
+                        anim.setRepeatMode(Animation.REVERSE);
+                        anim.setRepeatCount(Animation.INFINITE);
+                        explanationText.startAnimation(anim);
+
+                        explanationText.setOnClickListener(v -> {
+                            anim.cancel();
+                            explanationText.setAlpha(1.0f);
+                        });
 
                         // Save the new token in the cloud DB as well as the local Sqlite
                         User userCurrentData = Users.getUser(this, Utils.identity(this));
@@ -182,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
                         Utils.sendAnalytics(mFirebaseAnalytics, "hey_started", "User", "analytics");
                     }
                 });
+
 
     }
 
