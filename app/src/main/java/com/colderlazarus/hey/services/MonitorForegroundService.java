@@ -5,10 +5,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
@@ -44,20 +42,7 @@ public class MonitorForegroundService extends Service {
     private static final String REOPEN_ACTIVITY_ACTION = "hey.REOPEN_ACTIVITY_ACTION";
     private static final String EXIT_APP_ACTION = "hey.EXIT_APP_ACTION";
 
-    // The max amount of seconds a rider is allowed to be in distress notified state
-    // before the state is re-set to undefined.
-    private static final long DISTRESS_NOTIFIED_STATE_AGING_PERIOD_SEC = 5L * 60L;
-
-    // The max amount of seconds a rider is allowed to be in distress responding state
-    // before the state is re-set to undefined.
-    private static final long DISTRESS_RESPONDING_STATE_AGING_PERIOD_SEC = 30L * 60L;
-
     private static final long LOCATION_SAMPLE_RATE_MINUTES = 1L;
-
-    private final static long USER_STATE_AGING_MINUTES = 5L;
-
-    // Number of meters between weather sampling
-    public static final double WEATHER_SAMPLE_RATE_METERS = 1000.0;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -66,8 +51,6 @@ public class MonitorForegroundService extends Service {
     private static final String CHANNEL_ID = "LocationServiceForegroundServiceChannel";
 
     private static final int LOCATION_SERVICE_NOTIFICATION_ID = Utils.genIntUUID();
-
-    public static final String NOTIFICATION_DELETE_ACTION = "com.colderlazarus.rain.MonitorForegroundService.NOTIFICATION_DELETE_ACTION";
 
     private static final Object lastKnownLocationSync = new Object();
 
@@ -105,8 +88,6 @@ public class MonitorForegroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-
-        registerReceiver(mNotificationReceiver, new IntentFilter(NOTIFICATION_DELETE_ACTION));
 
         // Moving this code to a handler to avoid first time load delay
         Handler h = new Handler();
@@ -193,14 +174,6 @@ public class MonitorForegroundService extends Service {
     public void onDestroy() {
         super.onDestroy();
 
-        try {
-            unregisterReceiver(mNotificationReceiver);
-        } catch (Exception e) {
-            Log.e(TAG, "Trying to unregister a non-registered receiver [notification receiver]");
-        }
-
-        Log.i(TAG, "Ridinrain foreground service onDestroy called");
-
         if (mLocationManager != null) {
             try {
                 mLocationManager.removeUpdates(mLocationListener);
@@ -263,15 +236,4 @@ public class MonitorForegroundService extends Service {
             return MonitorForegroundService.this;
         }
     }
-
-    public BroadcastReceiver mNotificationReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action == null || !action.equals(NOTIFICATION_DELETE_ACTION)) {
-                return;
-            }
-        }
-    };
-
 }
