@@ -1,12 +1,14 @@
 package com.colderlazarus.hey.services;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.colderlazarus.hey.MainActivity;
 import com.colderlazarus.hey.dynamodb.UsersCache;
 import com.colderlazarus.hey.dynamodb.models.UserCacheSampleAt;
 import com.colderlazarus.hey.services.messages.HailMessage;
@@ -17,6 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.colderlazarus.hey.MainActivity.UPDATE_UI_ACTION;
+import static com.colderlazarus.hey.MainActivity.USER_IN_RANGE_EXTRA;
 
 public class LocationListener implements android.location.LocationListener {
 
@@ -109,16 +114,27 @@ public class LocationListener implements android.location.LocationListener {
             }
         }
 
-        // TODO update the users in range on the UI
+        try {
+            // Update the users in range on the UI
+            Intent updateUI = new Intent(context, MainActivity.class);
+            updateUI.setAction(UPDATE_UI_ACTION);
+            updateUI.putExtra(USER_IN_RANGE_EXTRA, userIds.size());
+//        updateUI.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(updateUI);
+        } catch (Exception e) {
+            // Nothing
+        }
 
-        HailMessage msg = new HailMessage(context);
+        if (userIds.size() > 0) {
+            HailMessage msg = new HailMessage(context);
 
-        Map<String, Object> messageBody = new HashMap<>();
-        messageBody.put(USERS_BEING_HAILED_IDS, TextUtils.join(",", userIds));
-        messageBody.put(HAILING_USER_LOCATION, String.format("%s,%s", mLastLocation.getLatitude(), mLastLocation.getLongitude()));
-        messageBody.put(HAIL_SENT_AT, String.valueOf(Utils.nowSec()));
+            Map<String, Object> messageBody = new HashMap<>();
+            messageBody.put(USERS_BEING_HAILED_IDS, TextUtils.join(",", userIds));
+            messageBody.put(HAILING_USER_LOCATION, String.format("%s,%s", mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+            messageBody.put(HAIL_SENT_AT, String.valueOf(Utils.nowSec()));
 
-        msg.sendMessage(context, messageBody, true);
+            msg.sendMessage(context, messageBody, true);
+        }
     }
 
     @Override

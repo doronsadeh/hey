@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Hey!</string>
     <string name="range">Hailing Range</string>
-    <string name="users_in_range">0 people in range</string>
+    <string name="users_in_range">No people in range</string>
     <string name="notification_title">Hailing people in range</string>
     <string name="explanation_text">Hailing people in range</string>
     <string name="exit_app">Exit</string>
@@ -17,4 +17,5 @@
     <string name="msg_not_delivered" translatable="false">Hail failed</string>
     <string name="hail_notification_format_string">Someone %s meters away hailed you %s minutes ago</string>
     <string name="you_are_being_hailed">You were hailed</string>
+    <string name="users_in_range_format_string">%s people in range</string>
 </resources>
