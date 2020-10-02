@@ -1,10 +1,15 @@
 package com.colderlazarus.hey;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Window;
@@ -12,8 +17,14 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.colderlazarus.hey.dynamodb.UsersCache;
+import com.colderlazarus.hey.dynamodb.models.User;
+import com.colderlazarus.hey.dynamodb.models.Users;
 import com.colderlazarus.hey.services.FCMAdapter;
+import com.colderlazarus.hey.services.MonitorForegroundService;
 import com.colderlazarus.hey.utils.Utils;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -26,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "hey.MainActivity";
 
+    private static final int TAG_CODE_MANDATORY_PERMISSIONS = Utils.genIntUUID();
+
+    private static final String EXIT_APP_ACTION = "hey.EXIT_APP_ACTION";
+
     private FirebaseAnalytics mFirebaseAnalytics;
 
     private boolean looperPrepared = false;
@@ -36,17 +51,64 @@ public class MainActivity extends AppCompatActivity {
     // to send FCM messages, and keep track of transient location
     public static String randomRecyclingIdentity = Utils.genStringUUID();
 
+    private void validatePermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // We have permissions
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                ActivityCompat.requestPermissions(this, new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                                Manifest.permission.RECORD_AUDIO,
+                                Manifest.permission.CALL_PHONE},
+                        TAG_CODE_MANDATORY_PERMISSIONS);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.RECORD_AUDIO,
+                                Manifest.permission.CALL_PHONE},
+                        TAG_CODE_MANDATORY_PERMISSIONS);
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_main);
+
+        Utils.sendAnalytics(mFirebaseAnalytics, "main_activity_create", "main_activity", "analytics");
+
+        validatePermissions();
 
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(R.layout.activity_main);
+        if (!Utils.checkNetworkAvailability(this)) {
+            Utils.sendAnalytics(mFirebaseAnalytics, "network_off", "main_activity", "analytics");
+            Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_LONG).show();
+            stopServices();
+            finish();
+            return;
+        }
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        String action = getIntent().getAction();
+        
+        if (null != action && action.equalsIgnoreCase(EXIT_APP_ACTION)) {
+            Utils.sendAnalytics(mFirebaseAnalytics, "exit_app", "main_activity", "analytics");
+            stopServices();
+            finish();
+            return;
+        }
 
         Activity aContext = this;
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -55,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
                     if (command.getMessage().equals("MISSING_INSTANCEID_SERVICE")) {
                         Toast.makeText(getApplicationContext(), R.string.monitor_service_is_not_running, Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(aContext, CannotRunOnDeviceActivity.class));
                     } else {
                         Toast.makeText(getApplicationContext(), R.string.not_compatiable_with_your_device, Toast.LENGTH_LONG).show();
                     }
@@ -91,77 +152,83 @@ public class MainActivity extends AppCompatActivity {
                                 _this.finish();
                             } catch (IOException e) {
                                 Log.e(TAG, "Could not delete instance ID!");
-                                Toast.makeText(getApplicationContext(), R.string.transient_ntwork_error, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), R.string.transient_network_error, Toast.LENGTH_LONG).show();
                             }
                         }).start();
                     } else {
 
                         // Save the new token in the cloud DB as well as the local Sqlite
-                        Rider userCurrentData = Users.getUser(this, Utils.identity(this));
+                        User userCurrentData = Users.getUser(this, Utils.identity(this));
 
                         if (null == userCurrentData)
-                            userCurrentData = Rider.build(this, Rider.RiderState.UNDEFINED, SessionConsts.NO_SESSION);
+                            userCurrentData = User.build(this);
 
                         Users.setUser(this, newToken, userCurrentData);
 
                         // Start the monitor service (NOTE! we must start the service BEFORE the cachedToken tries to access it)
                         startServices();
 
-                        NotificationsManager.init(getApplicationContext());
-
-                        toolbar = findViewById(R.id.toolbar);
-                        toolbar.setTitle("");
-                        setSupportActionBar(toolbar);
-
-                        // Init the tool bar buttons
-                        routePlanningActivityControl = new RoutePlanningActivityControl(this);
-
                         String myId = Utils.identity(this);
 
-                        try {
-                            Location _lastKnownLocation = getLastKnownLocation(this);
-                            if (null != _lastKnownLocation) {
-                                RidersCache.publishRiderToCache(
-                                        getApplicationContext(),
-                                        myId,
-                                        _lastKnownLocation.getBearing(),
-                                        _lastKnownLocation.getSpeed(),
-                                        _lastKnownLocation,
-                                        _lastKnownLocation,
-                                        -1L);
-                            }
-                        } catch (IOException e) {
-                            Log.w(TAG, String.format("Could not publish rider location to cache for: %s, due to: %s", myId, e.getMessage()));
+                        Location _lastKnownLocation = Utils.getLastKnownLocation(this);
+                        if (null != _lastKnownLocation) {
+                            UsersCache.publishUserLocation(
+                                    getApplicationContext(),
+                                    myId,
+                                    _lastKnownLocation,
+                                    -1L);
                         }
 
-                        // Validate subscription in DB, and if no subscription AND subscription based features are enabled,
-                        // suggest to re-subscribe else just turn them off
-                        Subscription subscription = Subscriptions.getSubscription(this, myId);
-                        if (null != subscription) {
-                            // Subscription exists (may have expired)
-                            if (!Subscriptions.validateSubscription(subscription)) {
-                                // Subscription expired, not purchased, etc.
-                                if (Subscriptions.proFeaturesActive(this)) {
-                                    // Turn off pro features, and notify user he may resubscribe
-                                    Subscriptions.turnOffProFeaturesAndSuggestResubscribe(this);
-                                }
-                                // Else: subscription is off in DB, and no pro feature currently active, do nothing.
-                            }
-                            // Else: subscription is valid, all is well
-                        } else {
-                            // No subscription, make sure all pro features are off (if they were on)
-                            if (Subscriptions.proFeaturesActive(this)) {
-                                // Turn off pro features, and notify user he may resubscribe
-                                Subscriptions.turnOffProFeaturesAndSuggestResubscribe(this);
-                            }
-                        }
-
-                        Utils.sendAnalytics(mFirebaseAnalytics, "started", "route_planning", "analytics");
-
-                        // TODO DEBUG
-                        // responseActivityDebugFunction();
+                        Utils.sendAnalytics(mFirebaseAnalytics, "hey_started", "User", "analytics");
                     }
                 });
 
     }
+
+    public static boolean isServiceRunningInForeground(Context context, Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                if (service.foreground) {
+                    return true;
+                }
+
+            }
+        }
+
+        return false;
+    }
+
+    public void startServices() {
+        // Start monitor
+        Intent serviceIntentMonitor = new Intent(this, MonitorForegroundService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntentMonitor);
+        } else {
+            startService(serviceIntentMonitor);
+        }
+
+        Utils.sendAnalytics(mFirebaseAnalytics, "start_foreground_service", "User", "analytics");
+
+        Activity aContext = this;
+        Handler h = new Handler();
+        Runnable r = () -> {
+            boolean isSrvRunningFg = isServiceRunningInForeground(getApplicationContext(), MonitorForegroundService.class);
+            if (!isSrvRunningFg) {
+                Toast.makeText(getApplicationContext(), R.string.monitor_service_is_not_running, Toast.LENGTH_LONG).show();
+                aContext.finish();
+                return;
+            }
+        };
+        h.postDelayed(r, 5000);
+    }
+
+    public void stopServices() {
+        // Stop monitor
+        Intent serviceIntentMonitor = new Intent(this, MonitorForegroundService.class);
+        stopService(serviceIntentMonitor);
+
+        Utils.sendAnalytics(mFirebaseAnalytics, "stop_foreground_service", "route_planning", "analytics");
+    }
+
 }

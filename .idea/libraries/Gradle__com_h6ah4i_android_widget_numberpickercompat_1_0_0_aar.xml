@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.h6ah4i.android.widget:numberpickercompat:1.0.0@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a47782e33e16668507cc48ff2004846e/jetified-numberpickercompat-1.0.0/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/948d233ea5556a057fa13ced44ed8268/jetified-numberpickercompat-1.0.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a47782e33e16668507cc48ff2004846e/jetified-numberpickercompat-1.0.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a47782e33e16668507cc48ff2004846e/jetified-numberpickercompat-1.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a47782e33e16668507cc48ff2004846e/jetified-numberpickercompat-1.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/948d233ea5556a057fa13ced44ed8268/jetified-numberpickercompat-1.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/948d233ea5556a057fa13ced44ed8268/jetified-numberpickercompat-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/948d233ea5556a057fa13ced44ed8268/jetified-numberpickercompat-1.0.0/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.h6ah4i.android.widget/numberpickercompat/1.0.0/c12e8db55d6435680b7773e15656486857e7d167/numberpickercompat-1.0.0-javadoc.jar!/" />

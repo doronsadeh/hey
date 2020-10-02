@@ -2,6 +2,9 @@ package com.colderlazarus.hey.services;
 
 import android.util.Log;
 
+import com.colderlazarus.hey.dynamodb.models.User;
+import com.colderlazarus.hey.dynamodb.models.Users;
+import com.colderlazarus.hey.utils.Utils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -11,18 +14,16 @@ import java.util.Map;
 
 public class FirebaseMsgsService extends FirebaseMessagingService {
 
-    private static final String TAG = "rideinrain.FMsgsService";
+    private static final String TAG = "hey.FMsgsService";
 
     // If message is older than 30 seconds ago, it is stale and irrelevant
     private static final long MAX_ALLOWED_FCM_MSG_AGE_SEC = 60L;
 
+    private static final String SENT_AT_EPOCH_SEC = "hey.SENT_AT_EPOCH_SEC";
+
     public enum MSG_TYPE {
         UNDEF(""),
-        DISTRESS("distress"),
-        CANCEL_DISTRESS("cancel_distress"),
-        INVITE("invite"),
-        CANCEL_INVITE("cancel_invite"),
-        PHONE_NUMBER_VERIFICATION("phone_number_verification");
+        HAIL("hail");
 
         private String msgType;
 
@@ -53,7 +54,7 @@ public class FirebaseMsgsService extends FirebaseMessagingService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        Users.setUser(getApplicationContext(), newToken, Rider.build(getApplicationContext(), Rider.RiderState.UNDEFINED, SessionConsts.NO_SESSION));
+        Users.setUser(getApplicationContext(), newToken, User.build(Utils.identity(getApplicationContext()), newToken, Utils.nowSec()));
     }
 
     @Override
@@ -84,31 +85,13 @@ public class FirebaseMsgsService extends FirebaseMessagingService {
                 }
             }
 
-            if (msgType.equalsIgnoreCase(MSG_TYPE.DISTRESS.valueOf())) {
+            if (msgType.equalsIgnoreCase(MSG_TYPE.HAIL.valueOf())) {
                 //
-                // Distress
+                // Hail
                 //
-                MessageBase distressMessage = new DistressMessage(getApplicationContext());
-                distressMessage.receiveMessage(getApplicationContext(), remoteMessage);
-            } else if (msgType.equalsIgnoreCase(MSG_TYPE.CANCEL_DISTRESS.valueOf())) {
-                //
-                // Cancel Distress
-                //
-                MessageBase distressCancelMessage = new DistressCancelMessage(null);
-                distressCancelMessage.receiveMessage(getApplicationContext(), remoteMessage);
-            } else if (msgType.equalsIgnoreCase(MSG_TYPE.INVITE.valueOf())) {
-                //
-                // Invite
-                //
-                // TODO
-                String msgText = _data.get(MSG_TEXT);
-                if (null != msgText && msgText.contains(SEPARATOR)) {
-                    String sessionId = msgText.split(SEPARATOR)[0];
-                    InviteMessage inviteMessage = new InviteMessage(getApplicationContext(), sessionId);
-                    inviteMessage.receiveMessage(getApplicationContext(), remoteMessage);
-                }
-            }
 
+                // TODO you are being hailed, notify the user
+            }
         }
     }
 }

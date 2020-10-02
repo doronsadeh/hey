@@ -22,7 +22,7 @@ public class UsersCache {
     private static final String TAG = "hey.UsersCache";
 
     private static final String HASH_KEY = "hash_key";
-    private static final String USER_RANDOM_ID = "user_random_id";
+    private static final String USER_ID = "user_id";
     private static final String TIMESTAMP = "timestamp";
     private static final String TTL = "ttl";
     private static final String GEO_HASH = "geo_hash";
@@ -98,7 +98,7 @@ public class UsersCache {
         UserCacheSampleAt r = new UserCacheSampleAt();
 
         r.set(HASH_KEY, new AttributeValue().withS(geoHash.substring(0, GEOHASH_PREFIX_LENGTH)));
-        r.set(USER_RANDOM_ID, new AttributeValue().withS(userId));
+        r.set(USER_ID, new AttributeValue().withS(userId));
 
         r.set(TIMESTAMP, new AttributeValue().withN(String.valueOf((int) Utils.nowSec())));
 

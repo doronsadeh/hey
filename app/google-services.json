@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "217269617885",
+    "firebase_url": "https://hey-6b48e.firebaseio.com",
+    "project_id": "hey-6b48e",
+    "storage_bucket": "hey-6b48e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217269617885:android:e326d9a1420324987fc734",
+        "android_client_info": {
+          "package_name": "com.colderlazarus.hey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217269617885-44uj1a26e205brcqjmj5878ameiqp81a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8P36D6_N079FPvdfncp-P64fRhoEdnX0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217269617885-44uj1a26e205brcqjmj5878ameiqp81a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

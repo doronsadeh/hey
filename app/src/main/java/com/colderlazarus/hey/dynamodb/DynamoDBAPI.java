@@ -36,7 +36,7 @@ public class DynamoDBAPI {
 
     private ExecutorService executor = Executors.newFixedThreadPool(1);
 
-    DynamoDBAPI(Context context, String tableName) {
+    public DynamoDBAPI(Context context, String tableName) {
 
         this.tableName = tableName;
 

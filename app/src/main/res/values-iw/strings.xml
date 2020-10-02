@@ -1,4 +1,6 @@
 <resources>
     <string name="range">טווח (מטרים)</string>
     <string name="users_in_range">0 א.נשים בטווח</string>
+    <string name="notification_title">בואו! עובד ברקע</string>
+    <string name="exit_app">צא</string>
 </resources>
