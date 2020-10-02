@@ -4,4 +4,7 @@
     <string name="notification_title">קורא לא.נשים בטווח</string>
     <string name="explanation_text">קורא לא.נשים בטווח</string>
     <string name="exit_app">כבה/י</string>
+    <string name="come_with_us">בואו!</string>
+    <string name="hail_notification_format_string">מישהו במרחק %s קרא לך לבוא לפני %s דקות</string>
+    <string name="you_are_being_hailed">קראו לך לבוא</string>
 </resources>

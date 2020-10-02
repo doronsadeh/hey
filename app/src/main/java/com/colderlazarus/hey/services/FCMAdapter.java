@@ -2,9 +2,7 @@ package com.colderlazarus.hey.services;
 
 
 import android.location.Location;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
+import android.text.TextUtils;
 
 import com.colderlazarus.hey.utils.Utils;
 
@@ -31,17 +29,16 @@ public class FCMAdapter {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static int sendFCMToDevices(FirebaseMsgsService.MSG_TYPE msgType,
                                        Location myLocation,
                                        String msgText,
-                                       String riderId,
-                                       List<String> ridersIds,
+                                       String userId,
+                                       List<String> usersIds,
                                        List<String> registrationTokens) {
 
         // Cannot send multi-cast to more than 100 devices
-        if (registrationTokens.size() > 100 || ridersIds.size() > 100) {
-            int _minSize = min(ridersIds.size(), registrationTokens.size());
+        if (registrationTokens.size() > 100 || usersIds.size() > 100) {
+            int _minSize = min(usersIds.size(), registrationTokens.size());
             registrationTokens = registrationTokens.subList(0, _minSize);
         }
 
@@ -50,10 +47,10 @@ public class FCMAdapter {
         String requestUri = null;
 
         requestUri = String.format("https://us-central1-ridrz-79dad.cloudfunctions.net/msg?tokens=%s&rids=%s&ts=%s&sid=%s&mt=%s&text=%s&loc=%s",
-                String.join(",", registrationTokens),
-                String.join(",", ridersIds),
+                TextUtils.join(",", registrationTokens),
+                TextUtils.join(",", usersIds),
                 _now,
-                riderId,
+                userId,
                 msgType.valueOf(),
                 msgText,
                 String.format("%s,%s", myLocation.getLatitude(), myLocation.getLongitude()));
@@ -74,29 +71,4 @@ public class FCMAdapter {
 
         return 0;
     }
-
-    public static String SMSVerification(String phoneNumber) {
-
-        long _now = Utils.nowSec();
-
-        String requestUri = null;
-
-        requestUri = String.format("https://us-central1-ridrz-79dad.cloudfunctions.net/sms_verification?ts=%s&phone_number=%s",
-                _now,
-                phoneNumber);
-
-        String response = Utils.HTTPGetCall(requestUri);
-
-        try {
-            if (null != response) {
-                JSONObject jObj = new JSONObject(response);
-                return jObj.getString("code");
-            }
-            return null;
-        } catch (JSONException e) {
-            return null;
-        }
-
-    }
-
 }

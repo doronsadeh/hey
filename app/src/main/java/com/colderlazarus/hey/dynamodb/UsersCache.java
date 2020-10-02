@@ -21,13 +21,13 @@ public class UsersCache {
 
     private static final String TAG = "hey.UsersCache";
 
-    private static final String HASH_KEY = "hash_key";
-    private static final String USER_ID = "user_id";
-    private static final String TIMESTAMP = "timestamp";
-    private static final String TTL = "ttl";
-    private static final String GEO_HASH = "geo_hash";
-    private static final String CURRENT_LAT = "current_lat";
-    private static final String CURRENT_LNG = "current_lng";
+    public static final String HASH_KEY = "hash_key";
+    public static final String USER_ID = "user_id";
+    public static final String TIMESTAMP = "timestamp";
+    public static final String TTL = "ttl";
+    public static final String GEO_HASH = "geo_hash";
+    public static final String CURRENT_LAT = "current_lat";
+    public static final String CURRENT_LNG = "current_lng";
 
     private static DynamoDBAPI db = null;
 

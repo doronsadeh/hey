@@ -11,4 +11,10 @@
     <string name="transient_network_error" translatable="false">Transient network error</string>
     <string name="no_network" translatable="false">No network</string>
     <string name="meters" translatable="false">m</string>
+    <string name="come_with_us">Come! Join us!</string>
+    <string name="channel_name" translatable="false">hail_channel</string>
+    <string name="channel_description" translatable="false">Hailing nearby users</string>
+    <string name="msg_not_delivered" translatable="false">Hail failed</string>
+    <string name="hail_notification_format_string">Someone % meters away hailed you %s minutes ago</string>
+    <string name="you_are_being_hailed">You were hailed</string>
 </resources>

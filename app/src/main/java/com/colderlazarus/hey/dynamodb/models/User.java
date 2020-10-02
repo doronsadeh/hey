@@ -17,13 +17,13 @@ public class User {
     public static final String REGISTRATION_TOKEN = "registration_token";
     public static final String TTL = "ttl";
 
-    public String riderId = null;
+    public String userId = null;
     public Long timestamp = null;
     public String token = null;
 
     public static User build(Context context) {
         User r = new User();
-        r.riderId = null;
+        r.userId = null;
         r.timestamp = -1L;
         r.token = null;
         return r;
@@ -31,7 +31,7 @@ public class User {
 
     public static User build(String userId, String token, long timestamp) {
         User r = new User();
-        r.riderId = userId;
+        r.userId = userId;
         r.timestamp = timestamp;
         r.token = token;
         return r;
@@ -39,7 +39,7 @@ public class User {
 
     public static User documentToUser(Document doc) {
         User r = new User();
-        r.riderId = doc.get(USER_ID).asString();
+        r.userId = doc.get(USER_ID).asString();
         r.timestamp = doc.get(TIMESTAMP).asLong();
         r.token = doc.get(REGISTRATION_TOKEN).asString();
         return r;

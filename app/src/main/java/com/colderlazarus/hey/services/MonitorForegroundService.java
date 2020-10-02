@@ -41,7 +41,7 @@ public class MonitorForegroundService extends Service {
     private static final String REOPEN_ACTIVITY_ACTION = "hey.REOPEN_ACTIVITY_ACTION";
     private static final String EXIT_APP_ACTION = "hey.EXIT_APP_ACTION";
 
-    private static final long LOCATION_SAMPLE_RATE_MINUTES = 1L;
+    private static final long LOCATION_SAMPLE_RATE_SEC = 15L;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -67,7 +67,6 @@ public class MonitorForegroundService extends Service {
     // Location tracking
     private LocationListener mLocationListener;
     private LocationManager mLocationManager;
-    protected ArrayList<Location> lastLocations = new ArrayList<>();
 
     private ScheduledExecutorService staticLLocationScheduler;
 
@@ -122,7 +121,6 @@ public class MonitorForegroundService extends Service {
         return START_NOT_STICKY;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate() {
         super.onCreate();
@@ -162,14 +160,16 @@ public class MonitorForegroundService extends Service {
                                         MonitorForegroundService.this.getApplicationContext(),
                                         myId,
                                         currentLocation,
-                                        5 * LOCATION_SAMPLE_RATE_MINUTES * 60
+                                        4 * LOCATION_SAMPLE_RATE_SEC
                                 );
+
+                                mLocationListener.hailUsersInRange(getApplicationContext());
                             }
                         } catch (Exception e) {
                             Log.e(TAG, "Could not update rider's cache for rider ID " + myId + " in standstill mode due to: " + e.getMessage());
                         }
                     }
-                }, 0, LOCATION_SAMPLE_RATE_MINUTES, TimeUnit.MINUTES);
+                }, 0, LOCATION_SAMPLE_RATE_SEC, TimeUnit.SECONDS);
 
     }
 
@@ -208,13 +208,7 @@ public class MonitorForegroundService extends Service {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private Notification getNotification() {
-
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Hey Channel", NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
-
         Intent roueActivityIntent = new Intent(this, MainActivity.class);
         roueActivityIntent.setAction(REOPEN_ACTIVITY_ACTION);
         roueActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
