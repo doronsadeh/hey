@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int TAG_CODE_MANDATORY_PERMISSIONS = Utils.genIntUUID();
 
     public static final String EXIT_APP_ACTION = "hey.EXIT_APP_ACTION";
-    public static final String UPDATE_UI_ACTION = "hey.UPDATE_UI_ACTION";
-
-    public static final String USER_IN_RANGE_EXTRA = "hey.USER_IN_RANGE_EXTRA";
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -231,36 +228,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Intent intent = getIntent();
-
-        if (null != intent) {
-            String action = intent.getAction();
-            if (null != action && action.equals(UPDATE_UI_ACTION)) {
-                int numUsersInRange = intent.getIntExtra(USER_IN_RANGE_EXTRA, 0);
-                ((TextView)findViewById(R.id.people_in_range)).setText(String.format(getString(R.string.users_in_range_format_string), numUsersInRange));
-            }
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Intent intent = getIntent();
-
-        if (null != intent) {
-            String action = intent.getAction();
-            if (null != action && action.equals(UPDATE_UI_ACTION)) {
-                int numUsersInRange = intent.getIntExtra(USER_IN_RANGE_EXTRA, 0);
-                ((TextView)findViewById(R.id.people_in_range)).setText(String.format(getString(R.string.users_in_range_format_string), numUsersInRange));
-            }
-        }
     }
 
     public static boolean isServiceRunningInForeground(Context context, Class<?> serviceClass) {

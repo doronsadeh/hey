@@ -1,7 +1,6 @@
 package com.colderlazarus.hey.services;
 
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,9 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.colderlazarus.hey.MainActivity.UPDATE_UI_ACTION;
-import static com.colderlazarus.hey.MainActivity.USER_IN_RANGE_EXTRA;
 
 public class LocationListener implements android.location.LocationListener {
 
@@ -112,17 +108,6 @@ public class LocationListener implements android.location.LocationListener {
             } catch (Exception e) {
                 Log.e(TAG, "Bad user info, cannot send: " + u.userId);
             }
-        }
-
-        try {
-            // Update the users in range on the UI
-            Intent updateUI = new Intent(context, MainActivity.class);
-            updateUI.setAction(UPDATE_UI_ACTION);
-            updateUI.putExtra(USER_IN_RANGE_EXTRA, userIds.size());
-//        updateUI.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(updateUI);
-        } catch (Exception e) {
-            // Nothing
         }
 
         if (userIds.size() > 0) {
