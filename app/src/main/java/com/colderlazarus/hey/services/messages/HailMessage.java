@@ -50,8 +50,13 @@ public class HailMessage extends MessageBase {
 
         String msgType = data.get(MSG_TYPE);
         String msgText = data.get(MSG_TEXT);
-        String location = data.get(HAILING_USER_LOCATION);
-        Long epochTimeSentAt = Long.parseLong(data.get(HAIL_SENT_AT));
+
+        String[] fields = msgText.split(SEPARATOR);
+        if (fields.length != 2)
+            return;
+
+        String location = fields[0];
+        Long epochTimeSentAt = Long.parseLong(fields[1]);
 
         // If corrupted call, discard it
         if (null == msgType || null == msgText || null == location || null == epochTimeSentAt)

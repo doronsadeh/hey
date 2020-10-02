@@ -46,7 +46,7 @@ public class FCMAdapter {
 
         String requestUri = null;
 
-        requestUri = String.format("https://us-central1-ridrz-79dad.cloudfunctions.net/msg?tokens=%s&rids=%s&ts=%s&sid=%s&mt=%s&text=%s&loc=%s",
+        requestUri = String.format("https://us-central1-hey-6b48e.cloudfunctions.net/msg?tokens=%s&rids=%s&ts=%s&sid=%s&mt=%s&text=%s&loc=%s",
                 TextUtils.join(",", registrationTokens),
                 TextUtils.join(",", usersIds),
                 _now,
