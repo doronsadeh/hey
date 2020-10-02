@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Binder;
@@ -56,8 +55,12 @@ public class MonitorForegroundService extends Service {
 
     private final LocationServiceBinder binder = new LocationServiceBinder();
 
-    // Preferences
-    private SharedPreferences sharedPreferences;
+    // Each time the app is started from scratch we get a new identity
+    // we don't care if it's different fom last time as it only serves
+    // to send FCM messages, and keep track of transient location
+    public static String randomRecyclingIdentity = null;
+
+    public static int radiusMeters = 1000;
 
     private static Location lastKnownLocation = null;
 

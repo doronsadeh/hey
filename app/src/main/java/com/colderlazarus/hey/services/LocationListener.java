@@ -14,7 +14,6 @@ public class LocationListener implements android.location.LocationListener {
 
     public static final float LOCATION_HISTORY_RESOLUTION_METERS = MonitorForegroundService.MIN_METERS;
     private static final int MAX_LOCATION_HISTORY = 10;
-    private static final float MIN_DISTANCE_TO_START_PREDICTING_METERS = MonitorForegroundService.MIN_METERS;
 
     private final MonitorForegroundService monitorForegroundService;
 
@@ -84,6 +83,8 @@ public class LocationListener implements android.location.LocationListener {
                 mLastLocation = _location;
 
                 MonitorForegroundService.setLastKnownLocation(mLastLocation);
+
+                // TODO do work
             }
 
         };

@@ -49,14 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean looperPrepared = false;
 
-    // TODO do we want to move this to the service?
-    // Each time the app is started from scratch we get a new identity
-    // we don't care if it's different fom last time as it only serves
-    // to send FCM messages, and keep track of transient location
-    public static String randomRecyclingIdentity = Utils.genStringUUID();
-
-    private int radiusMeters = 1000;
-
     private void validatePermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
@@ -116,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        if (null == MonitorForegroundService.randomRecyclingIdentity)
+            MonitorForegroundService.randomRecyclingIdentity = Utils.genStringUUID();
+
         Activity aContext = this;
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnFailureListener(command -> {
@@ -162,16 +157,11 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }).start();
                     } else {
-                        // Set initial range
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            ((SeekBar) findViewById(R.id.lookup_range_seekbar)).setProgress(radiusMeters, true);
-                        }
-
                         // Set listener
                         ((SeekBar) findViewById(R.id.lookup_range_seekbar)).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                radiusMeters = progress;
+                                MonitorForegroundService.radiusMeters = progress;
                                 ((TextView) findViewById(R.id.hail_distance)).setText(String.format("%s %s", progress, getString(R.string.meters)));
                             }
 
@@ -185,6 +175,11 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
+
+                        // Set initial range
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            ((SeekBar) findViewById(R.id.lookup_range_seekbar)).setProgress(MonitorForegroundService.radiusMeters, true);
+                        }
 
                         TextView explanationText = findViewById(R.id.explanation);
 

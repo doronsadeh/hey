@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
 import com.colderlazarus.hey.MainActivity;
+import com.colderlazarus.hey.services.MonitorForegroundService;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -371,7 +372,7 @@ public class Utils {
     }
 
     public static String identity(Context context) {
-        return MainActivity.randomRecyclingIdentity;
+        return MonitorForegroundService.randomRecyclingIdentity;
     }
 
 }

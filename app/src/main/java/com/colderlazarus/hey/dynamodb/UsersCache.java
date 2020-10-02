@@ -111,7 +111,6 @@ public class UsersCache {
         r.set(CURRENT_LNG, new AttributeValue().withN(String.valueOf((float) at.getLongitude())));
 
         try {
-            // TODO slow down the writes to get optimized pricing (impl. inside 'put')
             db.put(r.toDocument());
         } catch (Throwable t) {
             // If error, renew the DB connection on next attempt
