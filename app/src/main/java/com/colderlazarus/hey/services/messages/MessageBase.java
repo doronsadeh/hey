@@ -12,15 +12,12 @@ import java.util.Map;
 
 public abstract class MessageBase {
 
-    public static final String SESSION_UID = "com.colderlazarus.ridinrain.SESSION_UID";
-
-    // This is a contract between the Firebase function and the app - DO NOT MODIFY this
-    // without modifying the TypeScript code of the messaging function in Firebase.
     public static final String MSG_TEXT = "msg_text";
     public static final String MSG_TYPE = "msg_type";
-    public static final String SENT_AT_EPOCH_SEC = "time";
 
-    protected void createNotificationChannel(Context context, String channel_id) {
+    protected NotificationChannel createNotificationChannel(Context context, String channel_id) {
+
+        NotificationChannel notificationChannel = null;
 
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -36,6 +33,8 @@ public abstract class MessageBase {
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+
+        return notificationChannel;
     }
 
     //

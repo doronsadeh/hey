@@ -108,10 +108,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (null != intent) {
             action = intent.getAction();
-            if (null != action && action.equals(UPDATE_UI_ACTION)) {
-                int numUsersInRange = intent.getIntExtra(USER_IN_RANGE_EXTRA, 0);
-                ((TextView)findViewById(R.id.people_in_range)).setText(String.format(getString(R.string.users_in_range_format_string), numUsersInRange));
-            }
         }
 
         if (null != action && action.equalsIgnoreCase(EXIT_APP_ACTION)) {
@@ -246,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         if (null != intent) {
             String action = intent.getAction();
             if (null != action && action.equals(UPDATE_UI_ACTION)) {
-                String numUsersInRange = intent.getStringExtra(USER_IN_RANGE_EXTRA);
+                int numUsersInRange = intent.getIntExtra(USER_IN_RANGE_EXTRA, 0);
                 ((TextView)findViewById(R.id.people_in_range)).setText(String.format(getString(R.string.users_in_range_format_string), numUsersInRange));
             }
         }
@@ -261,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
         if (null != intent) {
             String action = intent.getAction();
             if (null != action && action.equals(UPDATE_UI_ACTION)) {
-                String numUsersInRange = intent.getStringExtra(USER_IN_RANGE_EXTRA);
+                int numUsersInRange = intent.getIntExtra(USER_IN_RANGE_EXTRA, 0);
                 ((TextView)findViewById(R.id.people_in_range)).setText(String.format(getString(R.string.users_in_range_format_string), numUsersInRange));
             }
         }

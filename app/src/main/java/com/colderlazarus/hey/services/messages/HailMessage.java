@@ -1,8 +1,12 @@
 package com.colderlazarus.hey.services.messages;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.location.Location;
+import android.os.Build;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.colderlazarus.hey.services.LocationListener.HAILING_USER_LOCATION;
 import static com.colderlazarus.hey.services.LocationListener.HAIL_SENT_AT;
@@ -38,9 +43,11 @@ public class HailMessage extends MessageBase {
 
     public static final long MAX_ALLOWED_HAIL_DELTA_SEC = 30L * 60L;
 
+    private NotificationChannel notificationsChannel = null;
+
     public HailMessage(Context context) {
         super();
-        createNotificationChannel(context, CHANNEL_ID);
+        notificationsChannel = createNotificationChannel(context, CHANNEL_ID);
     }
 
     @SuppressLint("ApplySharedPref")
@@ -77,15 +84,26 @@ public class HailMessage extends MessageBase {
         if ((Utils.nowSec() - epochTimeSentAt) > MAX_ALLOWED_HAIL_DELTA_SEC)
             return;
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-
-        @SuppressLint("StringFormatMatches") NotificationCompat.Builder builder = new NotificationCompat.Builder(context, HailMessage.CHANNEL_ID)
-                .setSmallIcon(R.drawable.app_icon)
-                .setContentTitle(context.getString(R.string.you_are_being_hailed))
-                .setContentText(String.format(context.getString(R.string.hail_notification_format_string), metersAway, round((Utils.nowSec() - epochTimeSentAt) / 60)))
-                .setAutoCancel(true);
-
-        notificationManager.notify(Utils.genIntUUID(), builder.build());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Hey Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
+            @SuppressLint("StringFormatMatches") Notification.Builder builder = new Notification.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.app_icon)
+                    .setContentTitle(context.getString(R.string.you_are_being_hailed))
+                    .setContentText(String.format(context.getString(R.string.hail_notification_format_string), metersAway, round((Utils.nowSec() - epochTimeSentAt) / 60)))
+                    .setAutoCancel(true);
+            notificationManager.notify(Utils.genIntUUID(), builder.build());
+        }
+        else {
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            @SuppressLint("StringFormatMatches") NotificationCompat.Builder builder = new NotificationCompat.Builder(context, HailMessage.CHANNEL_ID)
+                    .setSmallIcon(R.drawable.app_icon)
+                    .setContentTitle(context.getString(R.string.you_are_being_hailed))
+                    .setContentText(String.format(context.getString(R.string.hail_notification_format_string), metersAway, round((Utils.nowSec() - epochTimeSentAt) / 60)))
+                    .setAutoCancel(true);
+            notificationManager.notify(Utils.genIntUUID(), builder.build());
+        }
     }
 
     @Override
