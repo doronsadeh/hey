@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name" translatable="false">Hey!</string>
+    <string name="range">Range (meters)</string>
+    <string name="users_in_range">0 users in range</string>
+</resources>
