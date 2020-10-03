@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -253,15 +254,6 @@ public class Utils {
 
     public static long nowSec() {
         return System.currentTimeMillis() / 1000;
-    }
-
-    public static String toTitleCase(String str) {
-        String[] words = str.trim().split("\\s+");
-        String titleWords = "";
-        for (String w : words) {
-            titleWords += w.substring(0, 1).toUpperCase() + w.substring(1);
-        }
-        return String.join(" ", titleWords);
     }
 
     public static double C2F(double temperatureC) {

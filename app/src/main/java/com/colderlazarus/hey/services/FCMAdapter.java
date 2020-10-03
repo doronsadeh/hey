@@ -16,7 +16,7 @@ import static java.lang.Math.min;
 public class FCMAdapter {
 
     public static boolean verifyFCMLink(List<String> registrationTokens) {
-        String requestUri = String.format("https://us-central1-ridrz-79dad.cloudfunctions.net/verify?tokens=%s", String.join(",", registrationTokens));
+        String requestUri = String.format("https://us-central1-ridrz-79dad.cloudfunctions.net/verify?tokens=%s", TextUtils.join(",", registrationTokens));
         String response = Utils.HTTPGetCall(requestUri);
         try {
             if (null != response) {

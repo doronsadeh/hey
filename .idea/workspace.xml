@@ -8,9 +8,9 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="RVC:" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+    <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af4e8554-1828-4a31-b1f5-45f0753e9927" name="Default Changelist" comment="">
@@ -18,14 +18,27 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/release/app-release.aab" beforeDir="false" afterPath="$PROJECT_DIR$/app/release/app-release.aab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/FCMAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/FCMAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-iw/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-iw/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="UBV0218815005222" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_26" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -43,6 +56,7 @@
     <option name="KEY_STORE_PATH" value="$PROJECT_DIR$/keys/hey.keys" />
     <option name="KEY_ALIAS" value="key0" />
     <option name="REMEMBER_PASSWORDS" value="true" />
+    <option name="BUILD_TARGET_KEY" value="apk" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -55,11 +69,14 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ApkExportedModule" value="app" />
     <property name="BundleExportedModule" value="app" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="UBV0218815005222" />
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-10-03T19:23:02.815Z" />
     <property name="ExportApk.ApkPath" value="$PROJECT_DIR$/app" />
     <property name="ExportApk.BuildVariants" value="release" />
+    <property name="ExportApk.SignV1" value="true" />
+    <property name="ExportApk.SignV2" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SelectDeploymentTargetsDialog.selectedDevices" value="Pixel_API_24&#10;UBV0218815005222&#10;Pixel_2_API_26" />
@@ -68,6 +85,7 @@
     <property name="project.structure.last.edited" value="SDK Location" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.0" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
   <component name="RecentsManager">
@@ -168,6 +186,10 @@
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
     <state x="718" y="272" width="1033" height="624" key="#xdebugger.evaluate/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751569114" />
+    <state x="696" y="384" width="518" height="294" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1601756700490">
+      <screen x="0" y="27" width="1920" height="1001" />
+    </state>
+    <state x="696" y="384" width="518" height="294" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601756700490" />
     <state x="809" y="342" width="292" height="475" key="AndroidCreateXmlResourceDialog" timestamp="1601732153415">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
@@ -224,15 +246,15 @@
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
     <state x="478" y="246" width="954" height="569" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751611909" />
-    <state x="612" y="266" width="1215" height="522" key="find.popup" timestamp="1601735028788">
+    <state x="612" y="266" width="1215" height="522" key="find.popup" timestamp="1601756856649">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state x="612" y="266" width="1215" height="522" key="find.popup/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601735028788" />
+    <state x="612" y="266" width="1215" height="522" key="find.popup/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601756856649" />
     <state x="612" y="266" width="707" height="523" key="find.popup/0.27.1920.1002/1920.0.1920.1080@0.27.1920.1002" timestamp="1601721733851" />
-    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup" timestamp="1601734524452">
+    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup" timestamp="1601753116036">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601734524452" />
+    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601753116036" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -244,7 +266,7 @@
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/utils/Utils.java</url>
-          <line>378</line>
+          <line>370</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="java-line">

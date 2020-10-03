@@ -8,6 +8,6 @@
     <string name="hail_notification_format_string">מישהו במרחק %s קרא לך לבוא ב-%s</string>
     <string name="you_are_being_hailed">קראו לך לבוא</string>
     <string name="users_in_range_format_string">%s א.נשים בטווח</string>
-    <string name="press_to_start_hailing">לחץ על המגפון כדי לקרוא לאנשים בטווח</string>
+    <string name="press_to_start_hailing">לחץ על המגפון כדי לקרוא לא.נשים בטווח</string>
 
 </resources>
