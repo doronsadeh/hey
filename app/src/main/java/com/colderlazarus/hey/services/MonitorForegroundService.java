@@ -68,7 +68,7 @@ public class MonitorForegroundService extends Service {
 
     private static Long lastTimeIWasHailed = null;
 
-    private static Context appContext = null;
+    public static Context appContext = null;
 
     // Location tracking
     private LocationListener mLocationListener;

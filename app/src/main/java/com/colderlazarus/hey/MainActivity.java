@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXIT_APP_ACTION = "hey.EXIT_APP_ACTION";
 
-    private static final String HEY_IS_HAILING = "hey.prefs.HEY_IS_HAILING";
+    public static final String HEY_IS_HAILING = "hey.prefs.HEY_IS_HAILING";
 
     private FirebaseAnalytics mFirebaseAnalytics;
 

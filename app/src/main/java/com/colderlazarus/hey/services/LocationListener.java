@@ -1,12 +1,17 @@
 package com.colderlazarus.hey.services;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.preference.PreferenceManager;
+
+import com.colderlazarus.hey.MainActivity;
 import com.colderlazarus.hey.dynamodb.UsersCache;
 import com.colderlazarus.hey.dynamodb.models.User;
 import com.colderlazarus.hey.dynamodb.models.UserCacheSampleAt;
@@ -89,6 +94,17 @@ public class LocationListener implements android.location.LocationListener {
     }
 
     public synchronized void hailUsersInRange(Context context) {
+        try {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MonitorForegroundService.appContext);
+            boolean hailing = sharedPreferences.getBoolean(MainActivity.HEY_IS_HAILING, false);
+            if (!hailing)
+                return;
+        }
+        catch (Exception e) {
+            Log.e(TAG, "No appContext found yet, disabling hailing for now.");
+            return;
+        }
+
         List<UserCacheSampleAt> usersInRange = UsersCache.getCachedUsersAt(context, mLastLocation, MonitorForegroundService.radiusMeters);
 
         List<String> userIds = new ArrayList<>();
