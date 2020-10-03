@@ -15,7 +15,7 @@
     <string name="channel_name" translatable="false">hail_channel</string>
     <string name="channel_description" translatable="false">Hailing nearby users</string>
     <string name="msg_not_delivered" translatable="false">Hail failed</string>
-    <string name="hail_notification_format_string">Someone %s meters away hailed you %s minutes ago</string>
+    <string name="hail_notification_format_string">Someone %s meters away hailed you at %s</string>
     <string name="you_are_being_hailed">You were hailed</string>
     <string name="users_in_range_format_string">%s people in range</string>
     <string name="press_to_start_hailing">Press to hail nearby people</string>

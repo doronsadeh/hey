@@ -23,7 +23,6 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
-import com.colderlazarus.hey.MainActivity;
 import com.colderlazarus.hey.services.MonitorForegroundService;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -36,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -375,4 +375,9 @@ public class Utils {
         return MonitorForegroundService.randomRecyclingIdentity;
     }
 
+    public static String epochToLocalTime(Long secondsSinceUnixEpoch) {
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MMM");
+        String asString = formatter.format(secondsSinceUnixEpoch * 1000);
+        return asString;
+    }
 }

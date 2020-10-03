@@ -105,7 +105,7 @@ public class HailMessage extends MessageBase {
             @SuppressLint("StringFormatMatches") Notification.Builder builder = new Notification.Builder(context, CHANNEL_ID)
                     .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle(context.getString(R.string.you_are_being_hailed))
-                    .setContentText(String.format(context.getString(R.string.hail_notification_format_string), metersAway, round((Utils.nowSec() - epochTimeSentAt) / 60)))
+                    .setContentText(String.format(context.getString(R.string.hail_notification_format_string), metersAway, Utils.epochToLocalTime(epochTimeSentAt)))
                     .setAutoCancel(true);
             notificationManager.notify(Utils.genIntUUID(), builder.build());
         }
@@ -114,7 +114,7 @@ public class HailMessage extends MessageBase {
             @SuppressLint("StringFormatMatches") NotificationCompat.Builder builder = new NotificationCompat.Builder(context, HailMessage.CHANNEL_ID)
                     .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle(context.getString(R.string.you_are_being_hailed))
-                    .setContentText(String.format(context.getString(R.string.hail_notification_format_string), metersAway, round((Utils.nowSec() - epochTimeSentAt) / 60)))
+                    .setContentText(String.format(context.getString(R.string.hail_notification_format_string), metersAway, Utils.epochToLocalTime(epochTimeSentAt)))
                     .setAutoCancel(true);
             notificationManager.notify(Utils.genIntUUID(), builder.build());
         }
