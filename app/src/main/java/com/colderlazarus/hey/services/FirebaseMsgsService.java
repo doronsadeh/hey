@@ -56,7 +56,7 @@ public class FirebaseMsgsService extends FirebaseMessagingService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        Users.setUser(getApplicationContext(), newToken, User.build(Utils.identity(getApplicationContext()), newToken, Utils.nowSec()));
+        Users.setUser(getApplicationContext(), newToken, User.build(Utils.identity(getApplicationContext()), newToken, Utils.nowSec(), 0L), 0L);
     }
 
     @Override

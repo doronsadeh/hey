@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.location.Location;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -18,6 +19,7 @@ import com.colderlazarus.hey.dynamodb.models.Users;
 import com.colderlazarus.hey.services.FCMAdapter;
 import com.colderlazarus.hey.services.FirebaseMsgsService;
 import com.colderlazarus.hey.services.LocationListener;
+import com.colderlazarus.hey.services.MonitorForegroundService;
 import com.colderlazarus.hey.utils.Utils;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.messaging.RemoteMessage;
@@ -55,6 +57,19 @@ public class HailMessage extends MessageBase {
     public void receiveMessage(Context context, RemoteMessage remoteMessage) {
         Map<String, String> data = remoteMessage.getData();
 
+        try {
+            // If I got a message in the last DONT_NUDGE_TIME_SEC, bail
+            Long lastHailedAt = MonitorForegroundService.getLastTimeHailed();
+            if (null != lastHailedAt && (Utils.nowSec() - lastHailedAt) < LocationListener.DONT_NUDGE_TIME_SEC)
+                return;
+        } catch (Exception e) {
+            // Protected against service not started
+            Log.e(TAG, "Service not yet started");
+        }
+
+        // Else update it to - now
+        MonitorForegroundService.setLastTimeHailed(Utils.nowSec());
+
         String msgType = data.get(MSG_TYPE);
         String msgText = data.get(MSG_TEXT);
 
@@ -80,7 +95,6 @@ public class HailMessage extends MessageBase {
             metersAway = String.valueOf(round(getLastKnownLocation(context).distanceTo(hailingUserLocation)));
         }
 
-        // If distress too old, discard it
         if ((Utils.nowSec() - epochTimeSentAt) > MAX_ALLOWED_HAIL_DELTA_SEC)
             return;
 

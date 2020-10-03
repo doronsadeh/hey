@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                         if (null == userCurrentData)
                             userCurrentData = User.build(this);
 
-                        Users.setUser(this, newToken, userCurrentData);
+                        Users.setUser(this, newToken, userCurrentData, 0L);
 
                         // Start the monitor service (NOTE! we must start the service BEFORE the cachedToken tries to access it)
                         startServices();

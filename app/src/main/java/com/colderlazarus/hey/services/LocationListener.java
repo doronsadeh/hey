@@ -7,9 +7,10 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.colderlazarus.hey.MainActivity;
 import com.colderlazarus.hey.dynamodb.UsersCache;
+import com.colderlazarus.hey.dynamodb.models.User;
 import com.colderlazarus.hey.dynamodb.models.UserCacheSampleAt;
+import com.colderlazarus.hey.dynamodb.models.Users;
 import com.colderlazarus.hey.services.messages.HailMessage;
 import com.colderlazarus.hey.utils.Utils;
 import com.google.android.gms.maps.model.LatLng;
@@ -29,7 +30,7 @@ public class LocationListener implements android.location.LocationListener {
 
     private static final float MIN_HAIL_DISTANCE_METERS = 50;
 
-    private static final long DONT_NUDGE_TIME_SEC = 15 * 60;
+    public static final long DONT_NUDGE_TIME_SEC = 15 * 60;
 
     private final MonitorForegroundService monitorForegroundService;
 
@@ -85,9 +86,6 @@ public class LocationListener implements android.location.LocationListener {
         hOnLocWork.post(rOnLocRunnable);
     }
 
-    // Stored the last time we hailed a user, if too long ago, we can re-hail. else don't!
-    private Map<String, Long> hailedUsersAtTime = new HashMap<>();
-
     public synchronized void hailUsersInRange(Context context) {
         List<UserCacheSampleAt> usersInRange = UsersCache.getCachedUsersAt(context, mLastLocation, MonitorForegroundService.radiusMeters);
 
@@ -99,12 +97,11 @@ public class LocationListener implements android.location.LocationListener {
                 if (mLastLocation.distanceTo(Utils.LatLngToLocation(new LatLng(u.currentLat, u.currentLng))) < MIN_HAIL_DISTANCE_METERS)
                     continue;
 
-                if (hailedUsersAtTime.containsKey(u.userId) && (Utils.nowSec() - hailedUsersAtTime.get(u.userId)) < DONT_NUDGE_TIME_SEC)
-                    continue;
-                else
-                    hailedUsersAtTime.put(u.userId, Utils.nowSec());
-
-                userIds.add(u.userId);
+                User _user = Users.getUser(context, u.userId);
+                if (null != _user) {
+                    if ((Utils.nowSec() - _user.lastHailedAt) > DONT_NUDGE_TIME_SEC)
+                        userIds.add(u.userId);
+                }
             } catch (Exception e) {
                 Log.e(TAG, "Bad user info, cannot send: " + u.userId);
             }
@@ -119,6 +116,13 @@ public class LocationListener implements android.location.LocationListener {
             messageBody.put(HAIL_SENT_AT, String.valueOf(Utils.nowSec()));
 
             msg.sendMessage(context, messageBody, true);
+
+            for (String uid : userIds) {
+                User _user = Users.getUser(context, uid);
+                if (null != _user) {
+                    Users.setUser(context, _user.token, _user, Utils.nowSec());
+                }
+            }
         }
     }
 

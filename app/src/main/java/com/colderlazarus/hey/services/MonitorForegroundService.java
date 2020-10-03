@@ -10,12 +10,10 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Binder;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.colderlazarus.hey.MainActivity;
@@ -24,7 +22,6 @@ import com.colderlazarus.hey.dynamodb.UsersCache;
 import com.colderlazarus.hey.utils.Utils;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -36,13 +33,13 @@ public class MonitorForegroundService extends Service {
 
     private final String TAG = "hey.MonitorService";
 
-    public static final int MIN_MILLISECONDS = 1000;
-    public static final float MIN_METERS = (float) 10.0;
+    public static final int MIN_MILLISECONDS = 60 * 1000;
+    public static final float MIN_METERS = (float) 100.0;
 
     private static final String REOPEN_ACTIVITY_ACTION = "hey.REOPEN_ACTIVITY_ACTION";
     private static final String EXIT_APP_ACTION = "hey.EXIT_APP_ACTION";
 
-    private static final long LOCATION_SAMPLE_RATE_SEC = 15L;
+    private static final long LOCATION_SAMPLE_RATE_SEC = 60L;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -65,6 +62,8 @@ public class MonitorForegroundService extends Service {
 
     private static Location lastKnownLocation = null;
 
+    private static Long lastTimeIWasHailed = null;
+
     // Location tracking
     private LocationListener mLocationListener;
     private LocationManager mLocationManager;
@@ -80,6 +79,14 @@ public class MonitorForegroundService extends Service {
         synchronized (lastKnownLocationSync) {
             return lastKnownLocation;
         }
+    }
+
+    public static long getLastTimeHailed() {
+        return lastTimeIWasHailed;
+    }
+
+    public static void setLastTimeHailed(long hailedAt) {
+        lastTimeIWasHailed = hailedAt;
     }
 
     public static void setLastKnownLocation(Location mLastLocation) {
@@ -153,9 +160,7 @@ public class MonitorForegroundService extends Service {
 
                             Location currentLocation = Utils.getLastKnownLocation(MonitorForegroundService.this.getApplicationContext());
 
-                            // If no motion since last check, update the timestamp in the cloud DB, else we are
-                            // moving so no need to do anything, as onLocationChangedListener would update it.
-                            if (null != lastKnownLocation && null != currentLocation && (Utils.isFakeLocation(lastKnownLocation) || currentLocation.distanceTo(lastKnownLocation) < 50.0)) {
+                            if (null != lastKnownLocation && null != currentLocation && (Utils.isFakeLocation(lastKnownLocation) || currentLocation.distanceTo(lastKnownLocation) < (1.5 * MIN_METERS))) {
                                 setLastKnownLocation(currentLocation);
                                 UsersCache.publishUserLocation(
                                         MonitorForegroundService.this.getApplicationContext(),

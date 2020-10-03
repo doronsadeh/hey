@@ -6,7 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
@@ -18,9 +18,15 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/dynamodb/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/dynamodb/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/dynamodb/models/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/dynamodb/models/Users.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/FirebaseMsgsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/FirebaseMsgsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/LocationListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/LocationListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/MonitorForegroundService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/MonitorForegroundService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/messages/HailMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/messages/HailMessage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +58,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Pixel_2_API_26" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-10-02T23:26:38.855Z" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-10-03T12:12:00.610Z" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SelectDeploymentTargetsDialog.selectedDevices" value="UBV0218815005222&#10;Pixel_2_API_26" />
@@ -157,65 +163,81 @@
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
     <state x="581" y="27" width="748" height="1001" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601661021971" />
-    <state x="718" y="272" width="1033" height="624" key="#xdebugger.evaluate" timestamp="1601677475113">
+    <state x="718" y="272" width="1033" height="624" key="#xdebugger.evaluate" timestamp="1601726302208">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state x="718" y="272" width="1033" height="624" key="#xdebugger.evaluate/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601677475113" />
+    <state x="718" y="272" width="1033" height="624" key="#xdebugger.evaluate/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601726302208" />
     <state x="809" y="342" width="292" height="475" key="AndroidCreateXmlResourceDialog" timestamp="1601678591157">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
     <state x="809" y="342" width="292" height="475" key="AndroidCreateXmlResourceDialog/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601678591157" />
-    <state width="744" height="478" key="DebuggerActiveHint" timestamp="1601677579386">
+    <state width="744" height="478" key="DebuggerActiveHint" timestamp="1601724060990">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="744" height="478" key="DebuggerActiveHint/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601677579386" />
+    <state width="744" height="478" key="DebuggerActiveHint/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601724060990" />
     <state x="100" y="127" width="1720" height="801" key="DiffContextDialog" timestamp="1601664646247">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
     <state x="100" y="127" width="1720" height="801" key="DiffContextDialog/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601664646247" />
-    <state width="1874" height="258" key="GridCell.Tab.0.bottom" timestamp="1601682608650">
+    <state width="1874" height="250" key="GridCell.Tab.0.bottom" timestamp="1601727336562">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="258" key="GridCell.Tab.0.bottom/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601682608650" />
-    <state width="1874" height="258" key="GridCell.Tab.0.center" timestamp="1601682608650">
+    <state width="1874" height="250" key="GridCell.Tab.0.bottom/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601727336562" />
+    <state width="1874" height="250" key="GridCell.Tab.0.center" timestamp="1601727336561">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="258" key="GridCell.Tab.0.center/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601682608650" />
-    <state width="1874" height="258" key="GridCell.Tab.0.left" timestamp="1601682608650">
+    <state width="1874" height="250" key="GridCell.Tab.0.center/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601727336561" />
+    <state width="1874" height="250" key="GridCell.Tab.0.left" timestamp="1601727336561">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="258" key="GridCell.Tab.0.left/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601682608650" />
-    <state width="1874" height="258" key="GridCell.Tab.0.right" timestamp="1601682608650">
+    <state width="1874" height="250" key="GridCell.Tab.0.left/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601727336561" />
+    <state width="1874" height="250" key="GridCell.Tab.0.right" timestamp="1601727336562">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="258" key="GridCell.Tab.0.right/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601682608650" />
-    <state width="1874" height="250" key="GridCell.Tab.1.bottom" timestamp="1601682541157">
+    <state width="1874" height="250" key="GridCell.Tab.0.right/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601727336562" />
+    <state width="1874" height="250" key="GridCell.Tab.1.bottom" timestamp="1601727336563">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="250" key="GridCell.Tab.1.bottom/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601682541157" />
-    <state width="1874" height="250" key="GridCell.Tab.1.center" timestamp="1601682541157">
+    <state width="1874" height="250" key="GridCell.Tab.1.bottom/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601727336563" />
+    <state width="1874" height="250" key="GridCell.Tab.1.center" timestamp="1601727336562">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="250" key="GridCell.Tab.1.center/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601682541157" />
-    <state width="1874" height="250" key="GridCell.Tab.1.left" timestamp="1601682541157">
+    <state width="1874" height="250" key="GridCell.Tab.1.center/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601727336562" />
+    <state width="1874" height="250" key="GridCell.Tab.1.left" timestamp="1601727336562">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="250" key="GridCell.Tab.1.left/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601682541157" />
-    <state width="1874" height="250" key="GridCell.Tab.1.right" timestamp="1601682541157">
+    <state width="1874" height="250" key="GridCell.Tab.1.left/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601727336562" />
+    <state width="1874" height="250" key="GridCell.Tab.1.right" timestamp="1601727336562">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="250" key="GridCell.Tab.1.right/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601682541157" />
-    <state x="100" y="127" width="1720" height="801" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601682580148">
+    <state width="1874" height="250" key="GridCell.Tab.1.right/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601727336562" />
+    <state x="100" y="127" width="1720" height="801" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601723372040">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state x="100" y="127" width="1720" height="801" key="com.android.tools.idea.avdmanager.AvdListDialog/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601682580148" />
-    <state x="612" y="266" width="696" height="522" key="find.popup" timestamp="1601682161843">
+    <state x="100" y="127" width="1720" height="801" key="com.android.tools.idea.avdmanager.AvdListDialog/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601723372040" />
+    <state x="478" y="246" width="954" height="569" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1601726779880">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state x="612" y="266" width="696" height="522" key="find.popup/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601682161843" />
-    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup" timestamp="1601675221207">
+    <state x="478" y="246" width="954" height="569" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601726779880" />
+    <state x="612" y="266" width="707" height="522" key="find.popup" timestamp="1601726528951">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601675221207" />
+    <state x="612" y="266" width="707" height="522" key="find.popup/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601726528951" />
+    <state x="612" y="266" width="707" height="523" key="find.popup/0.27.1920.1002/1920.0.1920.1080@0.27.1920.1002" timestamp="1601721733851" />
+    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup" timestamp="1601724676210">
+      <screen x="0" y="27" width="1920" height="1001" />
+    </state>
+    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601724676210" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/LocationListener.java</url>
+          <line>101</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

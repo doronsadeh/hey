@@ -45,7 +45,7 @@ public class Users {
         return userData;
     }
 
-    public static synchronized boolean setUser(Context context, String token, User user) {
+    public static synchronized boolean setUser(Context context, String token, User user, Long lastHailedAt) {
         // If no DB make one
         if (null == db) {
             db = new DynamoDBAPI(context, DYNAMODB_TABLE);
@@ -57,6 +57,7 @@ public class Users {
         String myId = Utils.identity(context);
         user.set(User.USER_ID, new AttributeValue().withS(myId));
         user.set(User.TIMESTAMP, new AttributeValue().withN(String.valueOf((int) Utils.nowSec())));
+        user.set(User.LAST_HAILED_AT, new AttributeValue().withN(String.valueOf(lastHailedAt)));
 
         long untilEpoch = Utils.nowSec() + TTL_AGING_EPOCH_SEC;
         user.set(TTL, new AttributeValue().withN(String.valueOf(untilEpoch)));
