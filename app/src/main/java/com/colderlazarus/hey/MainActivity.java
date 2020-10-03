@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +18,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,11 +27,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import com.colderlazarus.hey.dynamodb.UsersCache;
 import com.colderlazarus.hey.dynamodb.models.User;
 import com.colderlazarus.hey.dynamodb.models.Users;
 import com.colderlazarus.hey.services.FCMAdapter;
+import com.colderlazarus.hey.services.LocationListener;
 import com.colderlazarus.hey.services.MonitorForegroundService;
 import com.colderlazarus.hey.utils.Utils;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -45,9 +51,13 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXIT_APP_ACTION = "hey.EXIT_APP_ACTION";
 
+    private static final String HEY_IS_HAILING = "hey.prefs.HEY_IS_HAILING";
+
     private FirebaseAnalytics mFirebaseAnalytics;
 
     private boolean looperPrepared = false;
+
+    private Animation anim = new AlphaAnimation(0.0f, 1.0f);
 
     private void validatePermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
@@ -187,20 +197,6 @@ public class MainActivity extends AppCompatActivity {
                             ((SeekBar) findViewById(R.id.lookup_range_seekbar)).setProgress(MonitorForegroundService.radiusMeters, true);
                         }
 
-                        TextView explanationText = findViewById(R.id.explanation);
-
-                        Animation anim = new AlphaAnimation(0.0f, 1.0f);
-                        anim.setDuration(1500);
-                        anim.setStartOffset(20);
-                        anim.setRepeatMode(Animation.REVERSE);
-                        anim.setRepeatCount(Animation.INFINITE);
-                        explanationText.startAnimation(anim);
-
-                        explanationText.setOnClickListener(v -> {
-                            anim.cancel();
-                            explanationText.setAlpha(1.0f);
-                        });
-
                         // Save the new token in the cloud DB as well as the local Sqlite
                         User userCurrentData = Users.getUser(this, Utils.identity(this));
 
@@ -224,6 +220,47 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         Utils.sendAnalytics(mFirebaseAnalytics, "hey_started", "User", "analytics");
+
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                        if (sharedPreferences.getBoolean(HEY_IS_HAILING, false)) {
+                            ((ImageView)findViewById(R.id.switch_hailing_on_off)).setImageResource(R.drawable.app_icon);
+                            ((TextView)findViewById(R.id.people_in_range)).setText(String.format(getString(R.string.hail_in_range_ticker), LocationListener.numPeopleInRange));
+                        }
+                        else {
+                            ((ImageView)findViewById(R.id.switch_hailing_on_off)).setImageResource(R.drawable.app_icon_off);
+                            ((TextView)findViewById(R.id.people_in_range)).setText(R.string.press_to_start_hailing);
+                        }
+
+                        findViewById(R.id.switch_hailing_on_off).setOnClickListener(v -> {
+                            // If there is imminent rain or snow, suggest a shelter
+                            boolean hailing = sharedPreferences.getBoolean(HEY_IS_HAILING, false);
+
+                            // Toggle
+                            hailing = !hailing;
+
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean(HEY_IS_HAILING, hailing);
+                            editor.commit();
+
+                            TextView explanationText = findViewById(R.id.people_in_range);
+
+                            if (hailing) {
+                                ((ImageView)v).setImageResource(R.drawable.app_icon);
+                                explanationText.setText(String.format(getString(R.string.hail_in_range_ticker), LocationListener.numPeopleInRange));
+                                anim.setDuration(1500);
+                                anim.setStartOffset(20);
+                                anim.setRepeatMode(Animation.REVERSE);
+                                anim.setRepeatCount(Animation.INFINITE);
+                                explanationText.startAnimation(anim);
+                            }
+                            else {
+                                ((ImageView)v).setImageResource(R.drawable.app_icon_off);
+                                anim.cancel();
+                                explanationText.setText(R.string.press_to_start_hailing);
+                            }
+
+
+                        });
                     }
                 });
 

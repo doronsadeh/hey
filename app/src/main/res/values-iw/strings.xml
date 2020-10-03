@@ -2,10 +2,12 @@
     <string name="range">טווח קריאה</string>
     <string name="users_in_range">אין א.נשים בטווח</string>
     <string name="notification_title">קורא לא.נשים בטווח</string>
-    <string name="explanation_text">קורא לא.נשים בטווח</string>
+    <string name="hail_in_range_ticker">קורא ל-%d א.נשים בטווח</string>
     <string name="exit_app">כבה/י</string>
     <string name="come_with_us">בואו!</string>
     <string name="hail_notification_format_string">מישהו במרחק %s קרא לך לבוא לפני %s דקות</string>
     <string name="you_are_being_hailed">קראו לך לבוא</string>
     <string name="users_in_range_format_string">%s א.נשים בטווח</string>
+    <string name="press_to_start_hailing">לחץ על המגפון כדי לקרוא לאנשים בטווח</string>
+
 </resources>

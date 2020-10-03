@@ -8,10 +8,10 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/switch_hailing_on_off"
         android:layout_width="168dp"
         android:layout_height="168dp"
-        android:src="@drawable/app_icon"
+        android:src="@drawable/app_icon_off"
         app:layout_constraintBottom_toTopOf="@+id/hail_distance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,27 +60,15 @@
         android:id="@+id/people_in_range"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-thin"
-        android:text="@string/users_in_range"
+        android:text="@string/press_to_start_hailing"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <TextView
-        android:id="@+id/explanation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/explanation_text"
-        android:fontFamily="sans-serif-thin"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/switch_hailing_on_off" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

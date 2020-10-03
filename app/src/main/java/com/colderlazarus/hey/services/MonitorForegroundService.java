@@ -19,6 +19,8 @@ import androidx.core.app.NotificationCompat;
 import com.colderlazarus.hey.MainActivity;
 import com.colderlazarus.hey.R;
 import com.colderlazarus.hey.dynamodb.UsersCache;
+import com.colderlazarus.hey.dynamodb.models.User;
+import com.colderlazarus.hey.dynamodb.models.Users;
 import com.colderlazarus.hey.utils.Utils;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -51,6 +53,8 @@ public class MonitorForegroundService extends Service {
 
     private static final Object lastKnownLocationSync = new Object();
 
+    private static final Object lastTimeHailedSync = new Object();
+
     private final LocationServiceBinder binder = new LocationServiceBinder();
 
     // Each time the app is started from scratch we get a new identity
@@ -63,6 +67,8 @@ public class MonitorForegroundService extends Service {
     private static Location lastKnownLocation = null;
 
     private static Long lastTimeIWasHailed = null;
+
+    private static Context appContext = null;
 
     // Location tracking
     private LocationListener mLocationListener;
@@ -82,11 +88,30 @@ public class MonitorForegroundService extends Service {
     }
 
     public static long getLastTimeHailed() {
-        return lastTimeIWasHailed;
+        synchronized (lastTimeHailedSync) {
+            if (null == lastTimeIWasHailed) {
+                if (null != appContext) {
+                    User _user = Users.getUser(appContext, Utils.identity(appContext));
+                    if (null != _user) {
+                        lastTimeIWasHailed = _user.lastHailedAt;
+                    }
+                    else {
+                        lastTimeIWasHailed = 0L;
+                    }
+                }
+                else {
+                    lastTimeIWasHailed = 0L;
+                }
+            }
+
+            return lastTimeIWasHailed;
+        }
     }
 
     public static void setLastTimeHailed(long hailedAt) {
-        lastTimeIWasHailed = hailedAt;
+        synchronized (lastTimeHailedSync) {
+            lastTimeIWasHailed = hailedAt;
+        }
     }
 
     public static void setLastKnownLocation(Location mLastLocation) {
@@ -98,6 +123,8 @@ public class MonitorForegroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+
+        appContext = getApplicationContext();
 
         // Moving this code to a handler to avoid first time load delay
         Handler h = new Handler();

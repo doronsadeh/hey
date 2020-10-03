@@ -38,6 +38,8 @@ public class LocationListener implements android.location.LocationListener {
 
     private boolean suspendingLocationListener = false;
 
+    public static int numPeopleInRange = 0;
+
     LocationListener(MonitorForegroundService monitorForegroundService, String provider) {
         this.monitorForegroundService = monitorForegroundService;
         mLastLocation = new Location(provider);
@@ -109,6 +111,8 @@ public class LocationListener implements android.location.LocationListener {
 
         if (userIds.size() > 0) {
             HailMessage msg = new HailMessage(context);
+
+            numPeopleInRange = userIds.size();
 
             Map<String, Object> messageBody = new HashMap<>();
             messageBody.put(USERS_BEING_HAILED_IDS, TextUtils.join(",", userIds));

@@ -3,7 +3,7 @@
     <string name="range">Hailing Range</string>
     <string name="users_in_range">No people in range</string>
     <string name="notification_title">Hailing people in range</string>
-    <string name="explanation_text">Hailing people in range</string>
+    <string name="hail_in_range_ticker">Hailing %d people in range</string>
     <string name="exit_app">Exit</string>
     <string name="monitor_service_is_not_running" translatable="false">Service not running</string>
     <string name="not_compatiable_with_your_device" translatable="false">App incompatiable with your device</string>
@@ -18,4 +18,5 @@
     <string name="hail_notification_format_string">Someone %s meters away hailed you %s minutes ago</string>
     <string name="you_are_being_hailed">You were hailed</string>
     <string name="users_in_range_format_string">%s people in range</string>
+    <string name="press_to_start_hailing">Press to hail nearby people</string>
 </resources>
