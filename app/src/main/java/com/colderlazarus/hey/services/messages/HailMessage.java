@@ -82,6 +82,8 @@ public class HailMessage extends MessageBase {
         String msgType = data.get(MSG_TYPE);
         String msgText = data.get(MSG_TEXT);
 
+        Log.d(TAG, "RVC: " + msgText);
+
         String[] fields = msgText.split(SEPARATOR);
         if (fields.length != 2)
             return;
