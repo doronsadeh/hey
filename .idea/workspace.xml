@@ -19,20 +19,17 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.1.1/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/LocationListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/LocationListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/messages/HailMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/messages/HailMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/utils/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-iw/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-iw/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="UBV0218815005222" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_26" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -63,8 +60,8 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="BundleExportedModule" value="app" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="UBV0218815005222" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-10-03T14:37:02.965Z" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Pixel_2_API_26" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-10-03T18:55:28.566Z" />
     <property name="ExportApk.ApkPath" value="$PROJECT_DIR$/app" />
     <property name="ExportApk.BuildVariants" value="release" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -171,18 +168,18 @@
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
     <state x="581" y="27" width="748" height="1001" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601661021971" />
-    <state x="718" y="272" width="1033" height="624" key="#xdebugger.evaluate" timestamp="1601749240117">
+    <state x="718" y="272" width="1033" height="624" key="#xdebugger.evaluate" timestamp="1601751569114">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state x="718" y="272" width="1033" height="624" key="#xdebugger.evaluate/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601749240117" />
+    <state x="718" y="272" width="1033" height="624" key="#xdebugger.evaluate/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751569114" />
     <state x="809" y="342" width="292" height="475" key="AndroidCreateXmlResourceDialog" timestamp="1601732153415">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
     <state x="809" y="342" width="292" height="475" key="AndroidCreateXmlResourceDialog/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601732153415" />
-    <state width="744" height="478" key="DebuggerActiveHint" timestamp="1601724060990">
+    <state width="744" height="478" key="DebuggerActiveHint" timestamp="1601751523921">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="744" height="478" key="DebuggerActiveHint/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601724060990" />
+    <state width="744" height="478" key="DebuggerActiveHint/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751523921" />
     <state x="100" y="127" width="1720" height="801" key="DiffContextDialog" timestamp="1601664646247">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
@@ -191,46 +188,46 @@
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
     <state x="813" y="289" width="753" height="491" key="FileChooserDialogImpl/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601738708558" />
-    <state width="1874" height="258" key="GridCell.Tab.0.bottom" timestamp="1601748552196">
+    <state width="1874" height="250" key="GridCell.Tab.0.bottom" timestamp="1601751702418">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="258" key="GridCell.Tab.0.bottom/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601748552196" />
-    <state width="1874" height="258" key="GridCell.Tab.0.center" timestamp="1601748552194">
+    <state width="1874" height="250" key="GridCell.Tab.0.bottom/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751702418" />
+    <state width="1874" height="250" key="GridCell.Tab.0.center" timestamp="1601751702418">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="258" key="GridCell.Tab.0.center/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601748552194" />
-    <state width="1874" height="258" key="GridCell.Tab.0.left" timestamp="1601748552194">
+    <state width="1874" height="250" key="GridCell.Tab.0.center/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751702418" />
+    <state width="1874" height="250" key="GridCell.Tab.0.left" timestamp="1601751702418">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="258" key="GridCell.Tab.0.left/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601748552194" />
-    <state width="1874" height="258" key="GridCell.Tab.0.right" timestamp="1601748552195">
+    <state width="1874" height="250" key="GridCell.Tab.0.left/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751702418" />
+    <state width="1874" height="250" key="GridCell.Tab.0.right" timestamp="1601751702418">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="258" key="GridCell.Tab.0.right/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601748552195" />
-    <state width="1874" height="250" key="GridCell.Tab.1.bottom" timestamp="1601735788842">
+    <state width="1874" height="250" key="GridCell.Tab.0.right/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751702418" />
+    <state width="1874" height="250" key="GridCell.Tab.1.bottom" timestamp="1601751702419">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="250" key="GridCell.Tab.1.bottom/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601735788842" />
-    <state width="1874" height="250" key="GridCell.Tab.1.center" timestamp="1601735788842">
+    <state width="1874" height="250" key="GridCell.Tab.1.bottom/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751702419" />
+    <state width="1874" height="250" key="GridCell.Tab.1.center" timestamp="1601751702419">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="250" key="GridCell.Tab.1.center/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601735788842" />
-    <state width="1874" height="250" key="GridCell.Tab.1.left" timestamp="1601735788842">
+    <state width="1874" height="250" key="GridCell.Tab.1.center/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751702419" />
+    <state width="1874" height="250" key="GridCell.Tab.1.left" timestamp="1601751702419">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="250" key="GridCell.Tab.1.left/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601735788842" />
-    <state width="1874" height="250" key="GridCell.Tab.1.right" timestamp="1601735788842">
+    <state width="1874" height="250" key="GridCell.Tab.1.left/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751702419" />
+    <state width="1874" height="250" key="GridCell.Tab.1.right" timestamp="1601751702419">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state width="1874" height="250" key="GridCell.Tab.1.right/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601735788842" />
+    <state width="1874" height="250" key="GridCell.Tab.1.right/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751702419" />
     <state x="100" y="127" width="1720" height="801" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601723372040">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
     <state x="100" y="127" width="1720" height="801" key="com.android.tools.idea.avdmanager.AvdListDialog/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601723372040" />
-    <state x="478" y="246" width="954" height="569" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1601728125684">
+    <state x="478" y="246" width="954" height="569" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1601751611909">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state x="478" y="246" width="954" height="569" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601728125684" />
+    <state x="478" y="246" width="954" height="569" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1601751611909" />
     <state x="612" y="266" width="1215" height="522" key="find.popup" timestamp="1601735028788">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
@@ -245,19 +242,34 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/LocationListener.java</url>
-          <line>119</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/messages/HailMessage.java</url>
-          <line>57</line>
+          <line>60</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+        <line-breakpoint suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/utils/Utils.java</url>
-          <line>379</line>
+          <line>378</line>
           <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/LocationListener.java</url>
+          <line>83</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/services/MonitorForegroundService.java</url>
+          <line>198</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/dynamodb/UsersCache.java</url>
+          <line>60</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/colderlazarus/hey/dynamodb/UsersCache.java</url>
+          <line>81</line>
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

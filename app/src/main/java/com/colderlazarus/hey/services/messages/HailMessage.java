@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Build;
 import android.util.Log;
@@ -12,7 +13,9 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.preference.PreferenceManager;
 
+import com.colderlazarus.hey.MainActivity;
 import com.colderlazarus.hey.R;
 import com.colderlazarus.hey.dynamodb.models.User;
 import com.colderlazarus.hey.dynamodb.models.Users;
@@ -56,6 +59,12 @@ public class HailMessage extends MessageBase {
     @Override
     public void receiveMessage(Context context, RemoteMessage remoteMessage) {
         Map<String, String> data = remoteMessage.getData();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (sharedPreferences.getBoolean(MainActivity.HEY_IS_HAILING, false)) {
+            // If I am sending hails, don't notify me, as I am already there
+            return;
+        }
 
         try {
             // If I got a message in the last DONT_NUDGE_TIME_SEC, bail
@@ -108,8 +117,7 @@ public class HailMessage extends MessageBase {
                     .setContentText(String.format(context.getString(R.string.hail_notification_format_string), metersAway, Utils.epochToLocalTime(epochTimeSentAt)))
                     .setAutoCancel(true);
             notificationManager.notify(Utils.genIntUUID(), builder.build());
-        }
-        else {
+        } else {
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             @SuppressLint("StringFormatMatches") NotificationCompat.Builder builder = new NotificationCompat.Builder(context, HailMessage.CHANNEL_ID)
                     .setSmallIcon(R.drawable.app_icon)

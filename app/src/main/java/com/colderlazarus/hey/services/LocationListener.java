@@ -105,12 +105,17 @@ public class LocationListener implements android.location.LocationListener {
             return;
         }
 
-        List<UserCacheSampleAt> usersInRange = UsersCache.getCachedUsersAt(context, mLastLocation, MonitorForegroundService.radiusMeters);
+        String myId = Utils.identity(context);
+
+        List<UserCacheSampleAt> usersInRange = UsersCache.getCachedUsersAt(context, MonitorForegroundService.getLastKnownLocation(), MonitorForegroundService.radiusMeters);
 
         List<String> userIds = new ArrayList<>();
 
         for (UserCacheSampleAt u : usersInRange) {
             try {
+                if (u.userId.equals(myId))
+                    continue;
+
                 // Don't send to users that are too close, as they are with you
                 if (mLastLocation.distanceTo(Utils.LatLngToLocation(new LatLng(u.currentLat, u.currentLng))) < MIN_HAIL_DISTANCE_METERS)
                     continue;
