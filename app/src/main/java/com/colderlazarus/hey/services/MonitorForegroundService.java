@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Binder;
@@ -15,6 +16,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 import com.colderlazarus.hey.MainActivity;
 import com.colderlazarus.hey.R;
@@ -94,12 +96,10 @@ public class MonitorForegroundService extends Service {
                     User _user = Users.getUser(appContext, Utils.identity(appContext));
                     if (null != _user) {
                         lastTimeIWasHailed = _user.lastHailedAt;
-                    }
-                    else {
+                    } else {
                         lastTimeIWasHailed = 0L;
                     }
-                }
-                else {
+                } else {
                     lastTimeIWasHailed = 0L;
                 }
             }
@@ -196,7 +196,7 @@ public class MonitorForegroundService extends Service {
                                         4 * LOCATION_SAMPLE_RATE_SEC
                                 );
 
-                                mLocationListener.hailUsersInRange(getApplicationContext());
+                                mLocationListener.hailUsersInRange(getApplicationContext(), false);
                             }
                         } catch (Exception e) {
                             Log.e(TAG, "Could not update rider's cache for rider ID " + myId + " in standstill mode due to: " + e.getMessage());
@@ -233,6 +233,12 @@ public class MonitorForegroundService extends Service {
             // We MUST set the min time for location updates otherwise we won't get any
             // we set it to 10 seconds which is about 300 meters when traveling at 100 km/h
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_MILLISECONDS, MIN_METERS, mLocationListener);
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            if (sharedPreferences.getBoolean(MainActivity.HEY_IS_HAILING, false)) {
+                // Make sure the number of users in area is up to date, if we are in hail mode
+                mLocationListener.hailUsersInRange(getApplicationContext(), true);
+            }
 
         } catch (SecurityException ex) {
             Log.i(TAG, "Failed to request location update, ignore" + ex);

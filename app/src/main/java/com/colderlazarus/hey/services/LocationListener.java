@@ -85,15 +85,15 @@ public class LocationListener implements android.location.LocationListener {
 
             MonitorForegroundService.setLastKnownLocation(mLastLocation);
 
-            // TODO do work, hail uses in range
-            hailUsersInRange(_ctx);
+            // Do work, hail uses in range
+            hailUsersInRange(_ctx, false);
         };
 
         // Do work (in parallel)
         hOnLocWork.post(rOnLocRunnable);
     }
 
-    public synchronized void hailUsersInRange(Context context) {
+    public synchronized void hailUsersInRange(Context context, boolean dryrun) {
         try {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MonitorForegroundService.appContext);
             boolean hailing = sharedPreferences.getBoolean(MainActivity.HEY_IS_HAILING, false);
@@ -130,10 +130,10 @@ public class LocationListener implements android.location.LocationListener {
             }
         }
 
-        if (userIds.size() > 0) {
-            HailMessage msg = new HailMessage(context);
+        numPeopleInRange = userIds.size();
 
-            numPeopleInRange = userIds.size();
+        if (!dryrun && userIds.size() > 0) {
+            HailMessage msg = new HailMessage(context);
 
             Map<String, Object> messageBody = new HashMap<>();
             messageBody.put(USERS_BEING_HAILED_IDS, TextUtils.join(",", userIds));
