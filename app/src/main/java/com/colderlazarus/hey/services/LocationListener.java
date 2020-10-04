@@ -31,6 +31,8 @@ import java.util.Map;
 
 import okhttp3.internal.Util;
 
+import static com.colderlazarus.hey.services.messages.MessageBase.HAILING_USER_ID;
+
 public class LocationListener implements android.location.LocationListener {
 
     private final String TAG = "LocationListener";
@@ -150,6 +152,7 @@ public class LocationListener implements android.location.LocationListener {
             messageBody.put(USERS_BEING_HAILED_IDS, TextUtils.join(",", userIds));
             messageBody.put(HAILING_USER_LOCATION, String.format("%s,%s", mLastLocation.getLatitude(), mLastLocation.getLongitude()));
             messageBody.put(HAIL_SENT_AT, String.valueOf(Utils.nowSec()));
+            messageBody.put(HAILING_USER_ID, myId);
 
             msg.sendMessage(context, messageBody, true);
 
@@ -196,6 +199,7 @@ public class LocationListener implements android.location.LocationListener {
             messageBody.put(USERS_BEING_HAILED_IDS, TextUtils.join(",", userIds));
             messageBody.put(HAILING_USER_LOCATION, String.format("%s,%s", mLastLocation.getLatitude(), mLastLocation.getLongitude()));
             messageBody.put(HAIL_SENT_AT, String.valueOf(Utils.nowSec()));
+            messageBody.put(HAILING_USER_ID, myId);
 
             msg.sendMessage(context, messageBody, true);
 

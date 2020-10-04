@@ -14,6 +14,7 @@ public abstract class MessageBase {
 
     public static final String MSG_TEXT = "msg_text";
     public static final String MSG_TYPE = "msg_type";
+    public static final String HAILING_USER_ID = "hailing_rider_id";
 
     protected NotificationChannel createNotificationChannel(Context context, String channel_id) {
 

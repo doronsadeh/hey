@@ -77,6 +77,11 @@ public class SOSMessage extends MessageBase {
 
         String msgType = data.get(MSG_TYPE);
         String msgText = data.get(MSG_TEXT);
+        String hailingUserId = data.get(HAILING_USER_ID);
+
+        // Don't self notify
+        if (hailingUserId.equals(Utils.identity(context)))
+            return;
 
         String[] fields = msgText.split(SEPARATOR);
         if (fields.length != 2)
@@ -139,6 +144,7 @@ public class SOSMessage extends MessageBase {
         String usersBeingHailedIds = (String) message.get(LocationListener.USERS_BEING_HAILED_IDS);
         String hailingUserLocation = (String) message.get(HAILING_USER_LOCATION);
         String hailSentAt = (String) message.get(HAIL_SENT_AT);
+        String hailingUserId = (String) message.get(HAILING_USER_ID);
 
         List<String> usersIds = Arrays.asList(usersBeingHailedIds.split(","));
 
@@ -179,7 +185,7 @@ public class SOSMessage extends MessageBase {
                                 hailingUserLocation,
                                 SEPARATOR,
                                 hailSentAt),
-                        me.userId,
+                        hailingUserId,
                         ridersIds,
                         ridersRegistrationTokens);
 
