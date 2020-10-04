@@ -23,6 +23,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="hey.CALL_POLICE_ACTION" />
+                <action android:name="hey.OPEN_NAV_APP_ACTION" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

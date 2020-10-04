@@ -8,13 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.media.SoundPool;
-import android.net.Uri;
 import android.os.Build;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.colderlazarus.hey.MainActivity;
 import com.colderlazarus.hey.R;
 import com.colderlazarus.hey.dynamodb.models.User;
 import com.colderlazarus.hey.dynamodb.models.Users;
@@ -54,20 +54,6 @@ public class SOSMessage extends MessageBase {
     public SOSMessage(Context context) {
         super();
         notificationsChannel = createNotificationChannel(context, CHANNEL_ID);
-    }
-
-    private void navUsingGoogleMaps(Context context, Location to) {
-        Uri gmmIntentUri = Uri.parse(
-                String.format(
-                        "google.navigation:q=%s,%s",
-                        to.getLatitude(),
-                        to.getLongitude()));
-        Intent googleMapsIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        googleMapsIntent.setPackage("com.google.android.apps.maps");
-        googleMapsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (googleMapsIntent.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(googleMapsIntent);
-        }
     }
 
     @SuppressLint("ApplySharedPref")
@@ -133,8 +119,12 @@ public class SOSMessage extends MessageBase {
         // Play siren
         Utils.Siren(context);
 
-        // TODO open the map
-        navUsingGoogleMaps(context, hailingUserLocation);
+        // open the map
+        Intent openMapIntent = new Intent(context, MainActivity.class);
+        openMapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        openMapIntent.putExtra(MainActivity.HAILING_USER_LOCATION_EXTRA, hailingUserLocation);
+        openMapIntent.putExtra(MainActivity.OPEN_NAV_APP_EXTRA, true);
+        context.startActivity(openMapIntent);
     }
 
     @Override

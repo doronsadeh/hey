@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,6 +47,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.round;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "hey.MainActivity";
@@ -54,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXIT_APP_ACTION = "hey.EXIT_APP_ACTION";
     public static final String CALL_POLICE_ACTION = "hey.CALL_POLICE_ACTION";
+
+    public static final String HAILING_USER_LOCATION_EXTRA = "hey.HAILING_USER_LOCATION_EXTRA";
+    public static final String OPEN_NAV_APP_EXTRA = "hey.OPEN_NAV_APP_EXTRA";
 
     public static final String HEY_IS_HAILING = "hey.prefs.HEY_IS_HAILING";
 
@@ -291,19 +297,88 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private boolean navUsingGoogleMaps(Context context, Location to) {
+        Uri gmmIntentUri = Uri.parse(
+                String.format(
+                        "google.navigation:q=%s,%s",
+                        to.getLatitude(),
+                        to.getLongitude()));
+        Intent googleMapsIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        googleMapsIntent.setPackage("com.google.android.apps.maps");
+        googleMapsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (googleMapsIntent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(googleMapsIntent);
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean navUsingWaze(Context context, Location to) {
+        try {
+            // Example: https://www.waze.com/ul?ll=40.75889500%2C-73.98513100&navigate=yes&zoom=17
+            String url = "waze://?ll="
+                    + to.getLatitude()
+                    + "%2C"
+                    + to.getLongitude()
+                    + "&navigate=yes";
+            Intent wazeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            wazeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(wazeIntent);
+            return true;
+        } catch (ActivityNotFoundException ex) {
+            return false;
+        }
+    }
+
+    private void nav(Context context, Location goingTo) {
+        // Try google maps, and if not installed try Waze
+        if (!navUsingGoogleMaps(context, goingTo)) {
+            if (!navUsingWaze(context, goingTo)) {
+                Log.e(TAG, "No supported navigation app installed");
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
 
-        Intent intent = getIntent();
+        actionsHandler(getIntent());
+    }
+
+    private void actionsHandler(Intent intent) {
         if (null != intent) {
             String action = intent.getAction();
             if (null != action) {
                 if (action.equals(CALL_POLICE_ACTION)) {
                     phonePolice100(this);
                 }
+            } else {
+                if (intent.getBooleanExtra(OPEN_NAV_APP_EXTRA, false)) {
+                    final Location hailingUserLocation = intent.getParcelableExtra(HAILING_USER_LOCATION_EXTRA);
+                    new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme))
+                            .setMessage(String.format(getResources().getString(R.string.nav_to_distress_location_format_str), round(hailingUserLocation.distanceTo(Utils.getLastKnownLocation(this)))))
+                            .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
+                                nav(this, hailingUserLocation);
+                            })
+                            .setNegativeButton(R.string.no, (dialog, which) -> {
+                                // Nothing
+                            })
+                            .setOnCancelListener(dialog -> {
+                                // Nothing
+                            })
+                            .show();
+
+                }
             }
         }
+
     }
 
     public static boolean isServiceRunningInForeground(Context context, Class<?> serviceClass) {
