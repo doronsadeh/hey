@@ -377,13 +377,7 @@ public class MainActivity extends AppCompatActivity {
                     Utils.soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
                         @Override
                         public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                            soundPool.play(sampleId, 0.75f, 0.75f, 1, 10, 1);
-
-                            Handler h = new Handler();
-                            Runnable r = () -> {
-                                soundPool.release();
-                            };
-                            h.postDelayed(r, 25000);
+                            soundPool.play(sampleId, 0.75f, 0.75f, 1, 3, 1);
                         }
                     });
 

@@ -414,7 +414,7 @@ public class Utils {
     }
 
     public static String epochToLocalTime(Long secondsSinceUnixEpoch) {
-        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MMM");
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd-MMM");
         String asString = formatter.format(secondsSinceUnixEpoch * 1000);
         return asString;
     }
@@ -453,20 +453,17 @@ public class Utils {
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                // First release the previous one
                 soundPool.play(sampleId, 0.75f, 0.75f, 1, 0, 1);
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    // Silent
+                }
             }
         });
 
         sirenSoundId = soundPool.load(context, R.raw.siren, 1);
-
-        if (null == Looper.myLooper())
-            Looper.prepare();
-        
-        Handler h = new Handler();
-        Runnable r = () -> {
-            soundPool.release();
-        };
-        h.postDelayed(r, 7500);
     }
 
     public static void CallPolice(Context context) {

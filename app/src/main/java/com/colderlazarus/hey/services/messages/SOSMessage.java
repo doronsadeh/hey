@@ -133,8 +133,6 @@ public class SOSMessage extends MessageBase {
         // Play siren
         Utils.Siren(context);
 
-        Toast.makeText(context, R.string.sos_received, Toast.LENGTH_LONG).show();
-
         // TODO open the map
         navUsingGoogleMaps(context, hailingUserLocation);
     }
