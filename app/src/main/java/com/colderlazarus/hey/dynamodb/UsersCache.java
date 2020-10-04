@@ -39,7 +39,7 @@ public class UsersCache {
     private static final int GEOHASH_PREFIX_LENGTH = 4;
 
     // Note that the DEFAULT_DISTRESS_RADIUS_METERS must match or be lower than the "radius" of the above GEOHASH_PREFIX_LENGTH!
-    public static final double MAX_RADIUS_METERS = 1000.0;
+    public static final double MAX_RADIUS_METERS = 5000.0;
 
     // We age users location every location changed sample times two seconds.
     // Note that each user would be updated every time his location changes by more

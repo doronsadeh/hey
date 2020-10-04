@@ -14,7 +14,6 @@
         android:layout_marginTop="64dp"
         android:src="@drawable/app_icon_off"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,11 +29,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
+            android:paddingBottom="6sp"
             android:text="1000 m"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
-            android:paddingBottom="6sp"
             android:textStyle="bold" />
 
         <SeekBar
@@ -66,14 +65,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-thin"
+        android:fontFamily="sans-serif"
         android:text="@string/press_to_start_hailing"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch_hailing_on_off"
         android:gravity="center_horizontal" />

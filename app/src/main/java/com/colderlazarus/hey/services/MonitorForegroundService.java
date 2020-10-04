@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.SoundPool;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -42,6 +43,7 @@ public class MonitorForegroundService extends Service {
 
     private static final String REOPEN_ACTIVITY_ACTION = "hey.REOPEN_ACTIVITY_ACTION";
     private static final String EXIT_APP_ACTION = "hey.EXIT_APP_ACTION";
+    public static final String SEND_SOS_ACTION = "hey.SEND_SOS";
 
     private static final long LOCATION_SAMPLE_RATE_SEC = 60L;
 
@@ -126,11 +128,14 @@ public class MonitorForegroundService extends Service {
 
         appContext = getApplicationContext();
 
-        // Moving this code to a handler to avoid first time load delay
-        Handler h = new Handler();
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
+        if (null != intent && null != intent.getAction() && intent.getAction().equals(SEND_SOS_ACTION)) {
+            if (null != mLocationListener) {
+                mLocationListener.sosAllUsersInRange(getApplicationContext());
+            }
+        } else {
+            // Moving this code to a handler to avoid first time load delay
+            Handler h = new Handler();
+            Runnable r = () -> {
                 // Get current location and Update map activity, and DB
                 lastKnownLocation = Utils.getLastKnownLocation(MonitorForegroundService.this.getApplicationContext());
 
@@ -148,10 +153,10 @@ public class MonitorForegroundService extends Service {
                 }
 
                 MonitorForegroundService.this.startTracking();
-            }
-        };
+            };
 
-        h.post(r);
+            h.post(r);
+        }
 
         return START_NOT_STICKY;
     }

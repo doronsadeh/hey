@@ -2,28 +2,39 @@ package com.colderlazarus.hey.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.media.ThumbnailUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
-import android.text.TextUtils;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
+import com.colderlazarus.hey.MainActivity;
+import com.colderlazarus.hey.R;
 import com.colderlazarus.hey.services.MonitorForegroundService;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -36,6 +47,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -56,6 +69,12 @@ public class Utils {
     private static final long HTTP_GET_TIMEOUT_SEC = 7;
 
     private static final int TAG_CODE_LOCATION_PERMISSION = Utils.genIntUUID();
+
+    public static SoundPool soundPool = null;
+
+    private static boolean looperPrepared = false;
+
+    private static int sirenSoundId;
 
     public static int genIntUUID() {
         return abs((int) (UUID.randomUUID().getLeastSignificantBits()) & 0xFFFF);
@@ -363,7 +382,36 @@ public class Utils {
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
+    private static String bin2hex(byte[] data) {
+        StringBuilder hex = new StringBuilder(data.length * 2);
+        for (byte b : data)
+            hex.append(String.format("%02x", b & 0xFF));
+        return hex.toString();
+    }
+
+    private static String getSha256Hash(String str) {
+        try {
+            MessageDigest digest = null;
+            try {
+                digest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException e1) {
+                Log.e(TAG, "No such hash algorithm: " + e1.getMessage());
+            }
+            digest.reset();
+            return bin2hex(digest.digest(str.getBytes()));
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
     public static String identity(Context context) {
+        // Get android ID and hash it
+        @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        String hashedIdentity = getSha256Hash(android_id);
+        if (null != hashedIdentity)
+            return hashedIdentity;
+
+        // Only if we can't hash we make up a random identity
         return MonitorForegroundService.randomRecyclingIdentity;
     }
 
@@ -371,5 +419,64 @@ public class Utils {
         SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MMM");
         String asString = formatter.format(secondsSinceUnixEpoch * 1000);
         return asString;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static synchronized void createNewSoundPool(Context context) {
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(attributes)
+                .build();
+
+        // Add sounds here
+        sirenSoundId = soundPool.load(context, R.raw.siren, 1);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static synchronized void createOldSoundPool(Context context) {
+        soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+
+        // Add sounds here
+        sirenSoundId = soundPool.load(context, R.raw.siren, 1);
+    }
+
+    public static void Siren(Context context) {
+        if (null == soundPool) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                Utils.createNewSoundPool(context);
+            else
+                Utils.createOldSoundPool(context);
+        }
+
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                soundPool.play(sampleId, 0.75f, 0.75f, 1, 0, 1);
+            }
+        });
+
+        sirenSoundId = soundPool.load(context, R.raw.siren, 1);
+
+        if (!looperPrepared) {
+            looperPrepared = true;
+            Looper.prepare();
+        }
+
+        Handler h = new Handler();
+        Runnable r = () -> {
+            soundPool.release();
+        };
+        h.postDelayed(r, 7500);
+    }
+
+    public static void CallPolice(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setAction(MainActivity.CALL_POLICE_ACTION);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

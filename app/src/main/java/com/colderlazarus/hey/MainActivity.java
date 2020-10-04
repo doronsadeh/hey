@@ -3,28 +3,31 @@ package com.colderlazarus.hey;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
+import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int TAG_CODE_MANDATORY_PERMISSIONS = Utils.genIntUUID();
 
     public static final String EXIT_APP_ACTION = "hey.EXIT_APP_ACTION";
+    public static final String CALL_POLICE_ACTION = "hey.CALL_POLICE_ACTION";
 
     public static final String HEY_IS_HAILING = "hey.prefs.HEY_IS_HAILING";
 
@@ -59,10 +63,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Animation anim = new AlphaAnimation(0.0f, 1.0f);
 
+    private int sirenSoundId;
+
     private void validatePermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             // We have permissions
         } else {
@@ -71,14 +76,12 @@ public class MainActivity extends AppCompatActivity {
                                 Manifest.permission.ACCESS_FINE_LOCATION,
                                 Manifest.permission.ACCESS_COARSE_LOCATION,
                                 Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-                                Manifest.permission.RECORD_AUDIO,
                                 Manifest.permission.CALL_PHONE},
                         TAG_CODE_MANDATORY_PERMISSIONS);
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{
                                 Manifest.permission.ACCESS_FINE_LOCATION,
                                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                                Manifest.permission.RECORD_AUDIO,
                                 Manifest.permission.CALL_PHONE},
                         TAG_CODE_MANDATORY_PERMISSIONS);
             }
@@ -223,12 +226,11 @@ public class MainActivity extends AppCompatActivity {
 
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                         if (sharedPreferences.getBoolean(HEY_IS_HAILING, false)) {
-                            ((ImageView)findViewById(R.id.switch_hailing_on_off)).setImageResource(R.drawable.app_icon);
-                            ((TextView)findViewById(R.id.people_in_range)).setText(String.format(getString(R.string.hail_in_range_ticker), LocationListener.numPeopleInRange));
-                        }
-                        else {
-                            ((ImageView)findViewById(R.id.switch_hailing_on_off)).setImageResource(R.drawable.app_icon_off);
-                            ((TextView)findViewById(R.id.people_in_range)).setText(R.string.press_to_start_hailing);
+                            ((ImageView) findViewById(R.id.switch_hailing_on_off)).setImageResource(R.drawable.app_icon);
+                            ((TextView) findViewById(R.id.people_in_range)).setText(String.format(getString(R.string.hail_in_range_ticker), LocationListener.numPeopleInRange));
+                        } else {
+                            ((ImageView) findViewById(R.id.switch_hailing_on_off)).setImageResource(R.drawable.app_icon_off);
+                            ((TextView) findViewById(R.id.people_in_range)).setText(R.string.press_to_start_hailing);
                         }
 
                         findViewById(R.id.switch_hailing_on_off).setOnClickListener(v -> {
@@ -245,26 +247,63 @@ public class MainActivity extends AppCompatActivity {
                             TextView explanationText = findViewById(R.id.people_in_range);
 
                             if (hailing) {
-                                ((ImageView)v).setImageResource(R.drawable.app_icon);
+                                ((ImageView) v).setImageResource(R.drawable.app_icon);
                                 explanationText.setText(String.format(getString(R.string.hail_in_range_ticker), LocationListener.numPeopleInRange));
                                 anim.setDuration(1500);
                                 anim.setStartOffset(20);
                                 anim.setRepeatMode(Animation.REVERSE);
                                 anim.setRepeatCount(Animation.INFINITE);
                                 explanationText.startAnimation(anim);
-                            }
-                            else {
-                                ((ImageView)v).setImageResource(R.drawable.app_icon_off);
+                            } else {
+                                ((ImageView) v).setImageResource(R.drawable.app_icon_off);
                                 anim.cancel();
                                 explanationText.setText(R.string.press_to_start_hailing);
                             }
 
 
                         });
+
+                        findViewById(R.id.sos_button).setOnClickListener(v -> {
+                            v.performHapticFeedback(
+                                    HapticFeedbackConstants.VIRTUAL_KEY,
+                                    HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                            );
+
+                            Toast.makeText(this, R.string.long_press_sos, Toast.LENGTH_LONG).show();
+                        });
+
+                        findViewById(R.id.sos_button).setOnLongClickListener(v -> {
+                            v.performHapticFeedback(
+                                    HapticFeedbackConstants.VIRTUAL_KEY,
+                                    HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                            );
+
+                            // TODO hail ALL people in area w/SoSMessage --> siren sounds, + location + press for waze
+                            Intent serviceIntent = new Intent(MonitorForegroundService.class.getName());
+                            serviceIntent.setPackage(this.getPackageName());
+                            serviceIntent.setAction(MonitorForegroundService.SEND_SOS_ACTION);
+                            this.startService(serviceIntent);
+                            return true;
+                        });
                     }
                 });
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Intent intent = getIntent();
+        if (null != intent) {
+            String action = intent.getAction();
+            if (null != action) {
+                if (action.equals(CALL_POLICE_ACTION)) {
+                    phonePolice100(this);
+                }
+            }
+        }
     }
 
     public static boolean isServiceRunningInForeground(Context context, Class<?> serviceClass) {
@@ -311,6 +350,52 @@ public class MainActivity extends AppCompatActivity {
         stopService(serviceIntentMonitor);
 
         Utils.sendAnalytics(mFirebaseAnalytics, "stop_foreground_service", "route_planning", "analytics");
+    }
+
+    private void phonePolice100(Context context) {
+        new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AppTheme))
+                .setMessage(context.getResources().getString(R.string.to_call_the_police))
+                .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
+                    String number = ("tel:+100");
+                    Intent intentCall = new Intent(Intent.ACTION_CALL);
+                    intentCall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentCall.setData(Uri.parse(number));
+
+                    try {
+                        context.startActivity(intentCall);
+                    } catch (SecurityException e) {
+                        Log.e(TAG, "Cannot call police");
+                    }
+
+                    if (null == Utils.soundPool) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                            Utils.createNewSoundPool(context);
+                        else
+                            Utils.createOldSoundPool(context);
+                    }
+
+                    Utils.soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                        @Override
+                        public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                            soundPool.play(sampleId, 0.75f, 0.75f, 1, 10, 1);
+
+                            Handler h = new Handler();
+                            Runnable r = () -> {
+                                soundPool.release();
+                            };
+                            h.postDelayed(r, 25000);
+                        }
+                    });
+
+                    sirenSoundId = Utils.soundPool.load(context, R.raw.calling_police, 1);
+                })
+                .setNegativeButton(R.string.no, (dialog, which) -> {
+                    // Nothing
+                })
+                .setOnCancelListener(dialog -> {
+                    // Nothing
+                })
+                .show();
     }
 
 }

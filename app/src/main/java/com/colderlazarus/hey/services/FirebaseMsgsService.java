@@ -6,6 +6,7 @@ import com.colderlazarus.hey.dynamodb.models.User;
 import com.colderlazarus.hey.dynamodb.models.Users;
 import com.colderlazarus.hey.services.messages.HailMessage;
 import com.colderlazarus.hey.services.messages.MessageBase;
+import com.colderlazarus.hey.services.messages.SOSMessage;
 import com.colderlazarus.hey.utils.Utils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -25,7 +26,8 @@ public class FirebaseMsgsService extends FirebaseMessagingService {
 
     public enum MSG_TYPE {
         UNDEF(""),
-        HAIL("hail");
+        HAIL("hail"),
+        SOS("sos");
 
         private String msgType;
 
@@ -94,6 +96,14 @@ public class FirebaseMsgsService extends FirebaseMessagingService {
                 MessageBase hailMsg = new HailMessage(getApplicationContext());
                 hailMsg.receiveMessage(getApplicationContext(), remoteMessage);
             }
+            else if (msgType.equalsIgnoreCase(MSG_TYPE.SOS.valueOf())) {
+                //
+                // SOS
+                //
+                MessageBase sosMsg = new SOSMessage(getApplicationContext());
+                sosMsg.receiveMessage(getApplicationContext(), remoteMessage);
+            }
+
         }
     }
 }

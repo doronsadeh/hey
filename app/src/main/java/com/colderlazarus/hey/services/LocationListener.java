@@ -3,6 +3,8 @@ package com.colderlazarus.hey.services;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -12,11 +14,13 @@ import android.widget.Toast;
 import androidx.preference.PreferenceManager;
 
 import com.colderlazarus.hey.MainActivity;
+import com.colderlazarus.hey.R;
 import com.colderlazarus.hey.dynamodb.UsersCache;
 import com.colderlazarus.hey.dynamodb.models.User;
 import com.colderlazarus.hey.dynamodb.models.UserCacheSampleAt;
 import com.colderlazarus.hey.dynamodb.models.Users;
 import com.colderlazarus.hey.services.messages.HailMessage;
+import com.colderlazarus.hey.services.messages.SOSMessage;
 import com.colderlazarus.hey.utils.Utils;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -33,11 +37,16 @@ public class LocationListener implements android.location.LocationListener {
     public static final String HAILING_USER_LOCATION = "hey.HAILING_USER_LOCATION";
     public static final String HAIL_SENT_AT = "hey.HAIL_SENT_AT";
 
+    private static final double SOS_RADIUS_METERS = 3000;
+
     private static final float MIN_HAIL_DISTANCE_METERS = 50;
+    private static final float MIN_SOS_DISTANCE_METERS = 10;
 
     public static final long DONT_NUDGE_TIME_SEC = 15 * 60;
 
     private final MonitorForegroundService monitorForegroundService;
+
+    private final SoundPool soundPool;
 
     private Location mLastLocation = null;
 
@@ -48,6 +57,7 @@ public class LocationListener implements android.location.LocationListener {
     LocationListener(MonitorForegroundService monitorForegroundService, String provider) {
         this.monitorForegroundService = monitorForegroundService;
         mLastLocation = new Location(provider);
+        soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
     }
 
     @Override
@@ -99,8 +109,7 @@ public class LocationListener implements android.location.LocationListener {
             boolean hailing = sharedPreferences.getBoolean(MainActivity.HEY_IS_HAILING, false);
             if (!hailing)
                 return;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Log.e(TAG, "No appContext found yet, disabling hailing for now.");
             return;
         }
@@ -148,6 +157,54 @@ public class LocationListener implements android.location.LocationListener {
                     Users.setUser(context, _user.token, _user, Utils.nowSec());
                 }
             }
+        }
+    }
+
+    public synchronized void sosAllUsersInRange(Context context) {
+        Utils.CallPolice(context);
+
+        String myId = Utils.identity(context);
+
+        List<UserCacheSampleAt> usersInRange = UsersCache.getCachedUsersAt(context, MonitorForegroundService.getLastKnownLocation(), SOS_RADIUS_METERS);
+
+        List<String> userIds = new ArrayList<>();
+
+        for (UserCacheSampleAt u : usersInRange) {
+            try {
+                if (u.userId.equals(myId))
+                    continue;
+
+                // Don't send to users that are too close, as they are with you
+                if (mLastLocation.distanceTo(Utils.LatLngToLocation(new LatLng(u.currentLat, u.currentLng))) < MIN_SOS_DISTANCE_METERS)
+                    continue;
+
+                User _user = Users.getUser(context, u.userId);
+                if (null != _user) {
+                    userIds.add(u.userId);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Bad user info, cannot send: " + u.userId);
+            }
+        }
+
+        if (userIds.size() > 0) {
+            SOSMessage msg = new SOSMessage(context);
+
+            Map<String, Object> messageBody = new HashMap<>();
+            messageBody.put(USERS_BEING_HAILED_IDS, TextUtils.join(",", userIds));
+            messageBody.put(HAILING_USER_LOCATION, String.format("%s,%s", mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+            messageBody.put(HAIL_SENT_AT, String.valueOf(Utils.nowSec()));
+
+            msg.sendMessage(context, messageBody, true);
+
+            for (String uid : userIds) {
+                User _user = Users.getUser(context, uid);
+                if (null != _user) {
+                    Users.setUser(context, _user.token, _user, Utils.nowSec());
+                }
+            }
+
+            Toast.makeText(context, R.string.sos_sent, Toast.LENGTH_LONG).show();
         }
     }
 
