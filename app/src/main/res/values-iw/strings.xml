@@ -15,8 +15,9 @@
     <string name="press_to_start_hailing">לחץ על המגפון כדי לקרוא לא.נשים\n בטווח המותר, להצטרף אליך להפגנה</string>
     <string name="sos">מצוקה</string>
     <string name="long_press_sos">לחץ לחיצה ארוכה להעזקת עזרה</string>
-    <string name="sos_sent">"נשלחה קריאת מצוקה"</string>
+    <string name="sos_sent">"נשלחה קריאת מצוקה לאנשים באזור"</string>
     <string name="to_call_the_police">האם להתקשר למשטרה?</string>
     <string name="yes">כן</string>
     <string name="no">לא</string>
+    <string name="sos_received">אדם במצוקה! פותח מפה למיקומו</string>
 </resources>

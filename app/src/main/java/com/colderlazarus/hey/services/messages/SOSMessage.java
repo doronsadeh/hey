@@ -5,10 +5,10 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Build;
 import android.widget.Toast;
 
@@ -54,6 +54,20 @@ public class SOSMessage extends MessageBase {
     public SOSMessage(Context context) {
         super();
         notificationsChannel = createNotificationChannel(context, CHANNEL_ID);
+    }
+
+    private void navUsingGoogleMaps(Context context, Location to) {
+        Uri gmmIntentUri = Uri.parse(
+                String.format(
+                        "google.navigation:q=%s,%s",
+                        to.getLatitude(),
+                        to.getLongitude()));
+        Intent googleMapsIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        googleMapsIntent.setPackage("com.google.android.apps.maps");
+        googleMapsIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (googleMapsIntent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(googleMapsIntent);
+        }
     }
 
     @SuppressLint("ApplySharedPref")
@@ -113,6 +127,11 @@ public class SOSMessage extends MessageBase {
 
         // Play siren
         Utils.Siren(context);
+
+        Toast.makeText(context, R.string.sos_received, Toast.LENGTH_LONG).show();
+
+        // TODO open the map
+        navUsingGoogleMaps(context, hailingUserLocation);
     }
 
     @Override

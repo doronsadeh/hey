@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,7 +28,6 @@ import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
@@ -461,11 +459,9 @@ public class Utils {
 
         sirenSoundId = soundPool.load(context, R.raw.siren, 1);
 
-        if (!looperPrepared) {
-            looperPrepared = true;
+        if (null == Looper.myLooper())
             Looper.prepare();
-        }
-
+        
         Handler h = new Handler();
         Runnable r = () -> {
             soundPool.release();
