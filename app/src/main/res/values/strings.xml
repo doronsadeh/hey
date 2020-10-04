@@ -1,22 +1,39 @@
 <resources>
     <string name="app_name" translatable="false">Hey!</string>
-    <string name="range">Hailing Range</string>
-    <string name="users_in_range">No people in range</string>
-    <string name="notification_title">Hailing people in range</string>
-    <string name="hail_in_range_ticker">Hailing %d people in range</string>
-    <string name="exit_app">Exit</string>
+
     <string name="monitor_service_is_not_running" translatable="false">Service not running</string>
     <string name="not_compatiable_with_your_device" translatable="false">App incompatiable with your device</string>
     <string name="your_network_connection_is_unstable" translatable="false">Your network connection is unstable</string>
     <string name="transient_network_error" translatable="false">Transient network error</string>
     <string name="no_network" translatable="false">No network</string>
     <string name="meters" translatable="false">m</string>
-    <string name="come_with_us">Come! Join us!</string>
     <string name="channel_name" translatable="false">hail_channel</string>
     <string name="channel_description" translatable="false">Hailing nearby users</string>
     <string name="msg_not_delivered" translatable="false">Hail failed</string>
+
+<!--
+    <string name="come_with_us">Come! Join us!</string>
+    <string name="range">Hailing Range</string>
+    <string name="users_in_range">No people in range</string>
+    <string name="notification_title">Hailing people in range</string>
+    <string name="hail_in_range_ticker">Hailing %d people in range</string>
+    <string name="exit_app">Exit</string>
     <string name="hail_notification_format_string">Someone %s meters away hailed you at %s</string>
     <string name="you_are_being_hailed">You were hailed</string>
     <string name="users_in_range_format_string">%s people in range</string>
     <string name="press_to_start_hailing">Press to hail nearby people</string>
+    <string name="sos">S.O.S</string>
+-->
+
+    <string name="range">טווח קריאה</string>
+    <string name="users_in_range">אין א.נשים בטווח</string>
+    <string name="notification_title">קורא לא.נשים בטווח</string>
+    <string name="hail_in_range_ticker">קורא ל-%d א.נשים בטווח</string>
+    <string name="exit_app">כבה/י</string>
+    <string name="come_with_us">בואו!</string>
+    <string name="hail_notification_format_string">מישהו במרחק %s מטרים קרא לך לבוא ב-%s</string>
+    <string name="you_are_being_hailed">קראו לך לבוא</string>
+    <string name="users_in_range_format_string">%s א.נשים בטווח</string>
+    <string name="press_to_start_hailing">לחץ על המגפון כדי לקרוא לא.נשים\n בטווח המותר, להצטרף אליך להפגנה</string>
+    <string name="sos">מצוקה</string>
 </resources>
