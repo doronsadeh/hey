@@ -78,10 +78,10 @@
 
     <Button
         android:id="@+id/sos_button"
-        android:layout_width="72sp"
+        android:layout_width="128sp"
         android:layout_height="72sp"
         android:layout_marginBottom="32dp"
-        android:backgroundTint="@color/colorAccent"
+        android:backgroundTint="#A0FF0000"
         android:text="@string/sos"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"

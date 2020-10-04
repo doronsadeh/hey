@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.SoundPool;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -192,16 +191,19 @@ public class MonitorForegroundService extends Service {
 
                             Location currentLocation = Utils.getLastKnownLocation(MonitorForegroundService.this.getApplicationContext());
 
-                            if (null != lastKnownLocation && null != currentLocation && (Utils.isFakeLocation(lastKnownLocation) || currentLocation.distanceTo(lastKnownLocation) < (1.5 * MIN_METERS))) {
-                                setLastKnownLocation(currentLocation);
-                                UsersCache.publishUserLocation(
-                                        MonitorForegroundService.this.getApplicationContext(),
-                                        myId,
-                                        currentLocation,
-                                        4 * LOCATION_SAMPLE_RATE_SEC
-                                );
+                            if (null != lastKnownLocation && null != currentLocation) {
 
-                                mLocationListener.hailUsersInRange(getApplicationContext(), false);
+                                if (Utils.isFakeLocation(lastKnownLocation) || currentLocation.distanceTo(lastKnownLocation) < (1.5 * MIN_METERS)) {
+                                    setLastKnownLocation(currentLocation);
+                                    UsersCache.publishUserLocation(
+                                            MonitorForegroundService.this.getApplicationContext(),
+                                            myId,
+                                            currentLocation,
+                                            4 * LOCATION_SAMPLE_RATE_SEC
+                                    );
+
+                                    mLocationListener.hailUsersInRange(getApplicationContext(), false);
+                                }
                             }
                         } catch (Exception e) {
                             Log.e(TAG, "Could not update rider's cache for rider ID " + myId + " in standstill mode due to: " + e.getMessage());

@@ -54,8 +54,7 @@ public class Users {
         if (null != token)
             user.token = token;
 
-        String myId = Utils.identity(context);
-        user.set(User.USER_ID, new AttributeValue().withS(myId));
+        user.set(User.USER_ID, new AttributeValue().withS(user.userId));
         user.set(User.TIMESTAMP, new AttributeValue().withN(String.valueOf((int) Utils.nowSec())));
         user.set(User.LAST_HAILED_AT, new AttributeValue().withN(String.valueOf(lastHailedAt)));
 
@@ -70,7 +69,7 @@ public class Users {
             // Else try to recover the cloud stored token
             User _u;
             if (null == token) {
-                _u = getUser(context, myId);
+                _u = getUser(context, user.userId);
                 if (null != _u)
                     token = _u.token;
             }
