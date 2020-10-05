@@ -25,4 +25,4 @@ hs_err_pid*
 .idea/
 app/release/
 
-.gradle/6.1.1/
+.gradle/
