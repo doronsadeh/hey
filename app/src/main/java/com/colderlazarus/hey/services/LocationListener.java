@@ -169,7 +169,10 @@ public class LocationListener implements android.location.LocationListener {
 
             Map<String, Object> messageBody = new HashMap<>();
             messageBody.put(USERS_BEING_HAILED_IDS, TextUtils.join(",", userIds));
-            messageBody.put(HAILING_USER_LOCATION, String.format("%s,%s", mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+
+            Location lkLoc = Utils.getLastKnownLocation(context);
+            messageBody.put(HAILING_USER_LOCATION, String.format("%s,%s", lkLoc.getLatitude(), lkLoc.getLongitude()));
+
             messageBody.put(HAIL_SENT_AT, String.valueOf(Utils.nowSec()));
             messageBody.put(HAILING_USER_ID, myId);
 
@@ -216,7 +219,10 @@ public class LocationListener implements android.location.LocationListener {
 
             Map<String, Object> messageBody = new HashMap<>();
             messageBody.put(USERS_BEING_HAILED_IDS, TextUtils.join(",", userIds));
-            messageBody.put(HAILING_USER_LOCATION, String.format("%s,%s", mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+
+            Location lkLoc = Utils.getLastKnownLocation(context);
+            messageBody.put(HAILING_USER_LOCATION, String.format("%s,%s", lkLoc.getLatitude(), lkLoc.getLongitude()));
+
             messageBody.put(HAIL_SENT_AT, String.valueOf(Utils.nowSec()));
             messageBody.put(HAILING_USER_ID, myId);
 
