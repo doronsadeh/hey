@@ -1,6 +1,7 @@
 package com.colderlazarus.hey.services;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.media.AudioManager;
@@ -29,8 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.internal.Util;
-
 import static com.colderlazarus.hey.services.messages.MessageBase.HAILING_USER_ID;
 
 public class LocationListener implements android.location.LocationListener {
@@ -46,7 +45,7 @@ public class LocationListener implements android.location.LocationListener {
     private static final float MIN_HAIL_DISTANCE_METERS = 50;
     private static final float MIN_SOS_DISTANCE_METERS = 10;
 
-    public static final long DONT_NUDGE_TIME_SEC = 15 * 60;
+    public static final long DONT_NUDGE_TIME_SEC = 5 * 60;
 
     private final MonitorForegroundService monitorForegroundService;
 
@@ -56,6 +55,7 @@ public class LocationListener implements android.location.LocationListener {
 
     private boolean suspendingLocationListener = false;
 
+    public static Integer previousNumPeopleInRange = null;
     public static int numPeopleInRange = 0;
 
     LocationListener(MonitorForegroundService monitorForegroundService, String provider) {
@@ -145,6 +145,21 @@ public class LocationListener implements android.location.LocationListener {
 
         numPeopleInRange = userIds.size();
 
+        Log.d(TAG, "Num in range=" + numPeopleInRange + ", previously=" + previousNumPeopleInRange);
+
+        if (null == previousNumPeopleInRange || numPeopleInRange != previousNumPeopleInRange) {
+            previousNumPeopleInRange = numPeopleInRange;
+            try {
+                // Update view
+                Intent updateNumInRange = new Intent(context, MainActivity.class);
+                updateNumInRange.putExtra(MainActivity.NUM_PEOPLE_IN_RANGE_EXTRA, numPeopleInRange);
+                updateNumInRange.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(updateNumInRange);
+            } catch (Exception e) {
+                // Silent, if the activity is not on top, never mind the update
+            }
+        }
+
         if (!dryrun && userIds.size() > 0) {
             HailMessage msg = new HailMessage(context);
 
@@ -209,8 +224,6 @@ public class LocationListener implements android.location.LocationListener {
                     Users.setUser(context, _user.token, _user, Utils.nowSec());
                 }
             }
-
-            Toast.makeText(context, R.string.sos_sent, Toast.LENGTH_LONG).show();
         }
     }
 

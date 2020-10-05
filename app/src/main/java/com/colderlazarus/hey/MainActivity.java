@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String HAILING_USER_LOCATION_EXTRA = "hey.HAILING_USER_LOCATION_EXTRA";
     public static final String OPEN_NAV_APP_EXTRA = "hey.OPEN_NAV_APP_EXTRA";
+    public static final String NUM_PEOPLE_IN_RANGE_EXTRA = "hey.NUM_PEOPLE_IN_RANGE_EXTRA";
 
     public static final String HEY_IS_HAILING = "hey.prefs.HEY_IS_HAILING";
 
@@ -372,6 +373,13 @@ public class MainActivity extends AppCompatActivity {
                         .show();
 
             }
+
+            int numInRange = intent.getIntExtra(NUM_PEOPLE_IN_RANGE_EXTRA, -1);
+            if (numInRange >= 0) {
+                ((TextView) findViewById(R.id.people_in_range)).setText(String.format(getString(R.string.hail_in_range_ticker), numInRange));
+            }
+
+
 
         }
 

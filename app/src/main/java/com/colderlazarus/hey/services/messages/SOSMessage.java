@@ -190,6 +190,8 @@ public class SOSMessage extends MessageBase {
                     Toast.makeText(context, reply, Toast.LENGTH_LONG).show();
                     return 0;
                 }
+
+                Toast.makeText(context, String.format(context.getString(R.string.sos_sent_format_str), successfulSends), Toast.LENGTH_LONG).show();
             }
         }
 
