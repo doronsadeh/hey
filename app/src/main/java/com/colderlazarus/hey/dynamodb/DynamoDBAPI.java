@@ -78,7 +78,7 @@ public class DynamoDBAPI {
             Log.e(TAG, "Timed-out while executing DynamoDB getItem: " + e.getMessage());
         }
 
-        return null;
+        return null;  
     }
 
     public List<Document> get(String hashKey, long currentTimeSec) {
