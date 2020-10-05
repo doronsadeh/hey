@@ -461,6 +461,25 @@ public class Utils {
         sirenSoundId = soundPool.load(context, R.raw.siren, 1);
     }
 
+    public static void Come(Context context) {
+        if (null == soundPool) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                Utils.createNewSoundPool(context);
+            else
+                Utils.createOldSoundPool(context);
+        }
+
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                // First release the previous one
+                soundPool.play(sampleId, 0.99f, 0.99f, 1, 3, 1);
+            }
+        });
+
+        sirenSoundId = soundPool.load(context, R.raw.come, 1);
+    }
+
     public static void CallPolice(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setAction(MainActivity.CALL_POLICE_ACTION);

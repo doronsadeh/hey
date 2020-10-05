@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                         User userCurrentData = Users.getUser(this, Utils.identity(this));
 
                         if (null == userCurrentData)
-                            userCurrentData = User.build(this);
+                            userCurrentData = User.build(this, Utils.identity(this));
 
                         Users.setUser(this, newToken, userCurrentData, 0L);
 

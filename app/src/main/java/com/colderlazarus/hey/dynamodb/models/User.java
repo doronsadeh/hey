@@ -24,9 +24,9 @@ public class User {
     public String token = null;
     public long lastHailedAt;
 
-    public static User build(Context context) {
+    public static User build(Context context, String userId) {
         User r = new User();
-        r.userId = null;
+        r.userId = userId;
         r.timestamp = -1L;
         r.token = null;
         r.lastHailedAt = -1L;

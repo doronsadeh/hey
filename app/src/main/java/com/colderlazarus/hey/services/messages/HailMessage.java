@@ -128,6 +128,8 @@ public class HailMessage extends MessageBase {
                     .setAutoCancel(true);
             notificationManager.notify(Utils.genIntUUID(), builder.build());
         }
+
+        Utils.Come(context);
     }
 
     @Override
