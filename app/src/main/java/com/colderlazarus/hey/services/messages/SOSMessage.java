@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -94,6 +95,11 @@ public class SOSMessage extends MessageBase {
         if ((Utils.nowSec() - epochTimeSentAt) > MAX_ALLOWED_SOS_DELTA_SEC)
             return;
 
+        Intent notificationIntent = new Intent(context, MainActivity.class);
+        notificationIntent.putExtra(MainActivity.HAILING_USER_LOCATION_EXTRA, hailingUserLocation);
+        notificationIntent.putExtra(MainActivity.OPEN_NAV_APP_EXTRA, true);
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "SOS Channel", NotificationManager.IMPORTANCE_HIGH);
             channel.enableLights(true);
@@ -104,6 +110,7 @@ public class SOSMessage extends MessageBase {
                     .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle(context.getString(R.string.you_are_being_sosed))
                     .setContentText(String.format(context.getString(R.string.sos_notification_format_string), metersAway, Utils.epochToLocalTime(epochTimeSentAt)))
+                    .setContentIntent(pIntent)
                     .setAutoCancel(true);
             notificationManager.notify(Utils.genIntUUID(), builder.build());
         } else {
@@ -112,6 +119,7 @@ public class SOSMessage extends MessageBase {
                     .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle(context.getString(R.string.you_are_being_sosed))
                     .setContentText(String.format(context.getString(R.string.sos_notification_format_string), metersAway, Utils.epochToLocalTime(epochTimeSentAt)))
+                    .setContentIntent(pIntent)
                     .setAutoCancel(true);
             notificationManager.notify(Utils.genIntUUID(), builder.build());
         }
@@ -119,12 +127,12 @@ public class SOSMessage extends MessageBase {
         // Play siren
         Utils.Siren(context);
 
-        // open the map
-        Intent openMapIntent = new Intent(context, MainActivity.class);
-        openMapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        openMapIntent.putExtra(MainActivity.HAILING_USER_LOCATION_EXTRA, hailingUserLocation);
-        openMapIntent.putExtra(MainActivity.OPEN_NAV_APP_EXTRA, true);
-        context.startActivity(openMapIntent);
+//        // open the map
+//        Intent openMapIntent = new Intent(context, MainActivity.class);
+//        openMapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        openMapIntent.putExtra(MainActivity.HAILING_USER_LOCATION_EXTRA, hailingUserLocation);
+//        openMapIntent.putExtra(MainActivity.OPEN_NAV_APP_EXTRA, true);
+//        context.startActivity(openMapIntent);
     }
 
     @Override

@@ -333,16 +333,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void nav(Context context, Location goingTo) {
         // Try google maps, and if not installed try Waze
-        if (!navUsingGoogleMaps(context, goingTo)) {
-            if (!navUsingWaze(context, goingTo)) {
+        if (!navUsingWaze(context, goingTo)) {
+            if (!navUsingGoogleMaps(context, goingTo)) {
                 Log.e(TAG, "No supported navigation app installed");
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -359,24 +354,25 @@ public class MainActivity extends AppCompatActivity {
                 if (action.equals(CALL_POLICE_ACTION)) {
                     phonePolice100(this);
                 }
-            } else {
-                if (intent.getBooleanExtra(OPEN_NAV_APP_EXTRA, false)) {
-                    final Location hailingUserLocation = intent.getParcelableExtra(HAILING_USER_LOCATION_EXTRA);
-                    new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme))
-                            .setMessage(String.format(getResources().getString(R.string.nav_to_distress_location_format_str), round(hailingUserLocation.distanceTo(Utils.getLastKnownLocation(this)))))
-                            .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
-                                nav(this, hailingUserLocation);
-                            })
-                            .setNegativeButton(R.string.no, (dialog, which) -> {
-                                // Nothing
-                            })
-                            .setOnCancelListener(dialog -> {
-                                // Nothing
-                            })
-                            .show();
-
-                }
             }
+
+            if (intent.getBooleanExtra(OPEN_NAV_APP_EXTRA, false)) {
+                final Location hailingUserLocation = intent.getParcelableExtra(HAILING_USER_LOCATION_EXTRA);
+                new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme))
+                        .setMessage(String.format(getResources().getString(R.string.nav_to_distress_location_format_str), round(hailingUserLocation.distanceTo(Utils.getLastKnownLocation(this)))))
+                        .setPositiveButton(R.string.yes, (dialog, whichButton) -> {
+                            nav(this, hailingUserLocation);
+                        })
+                        .setNegativeButton(R.string.no, (dialog, which) -> {
+                            // Nothing
+                        })
+                        .setOnCancelListener(dialog -> {
+                            // Nothing
+                        })
+                        .show();
+
+            }
+
         }
 
     }

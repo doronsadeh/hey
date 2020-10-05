@@ -455,11 +455,6 @@ public class Utils {
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
                 // First release the previous one
                 soundPool.play(sampleId, 0.75f, 0.75f, 1, 0, 1);
-                try {
-                    sleep(5000);
-                } catch (InterruptedException e) {
-                    // Silent
-                }
             }
         });
 
