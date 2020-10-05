@@ -43,7 +43,7 @@ public class DynamoDBAPI {
         // Initialize the Amazon Cognito credentials provider
         CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
                 context.getApplicationContext(),
-                "eu-west-1:c2389ba3-aee5-4a6c-b0e0-18105294daef", // Identity pool ID
+                "eu-west-1:64a6553f-9b37-43b1-b5e7-05686c62dc74", // Identity pool ID
                 Regions.EU_WEST_1 // Region
         );
 
