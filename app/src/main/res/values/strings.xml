@@ -34,4 +34,5 @@
     <string name="sos_received">אדם במצוקה! פותח מפה למיקומו</string>
     <string name="nav_to_distress_location_format_str">קריאת מצוקה %d מטרים ממיקומך. האם להענות לקריאה?</string>
     <string name="hailing">שולח הזמנות לא.נשים בטווח</string>
+    <string name="no_people_in_range">ממתין לא.נשים זמינים</string>
 </resources>

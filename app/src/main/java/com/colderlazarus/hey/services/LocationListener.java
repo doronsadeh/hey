@@ -167,6 +167,8 @@ public class LocationListener implements android.location.LocationListener {
             try {
                 // Update foreground service notification
                 String notificationText = String.format(context.getString(R.string.hail_in_range_ticker), LocationListener.numPeopleInRange);
+                if (LocationListener.numPeopleInRange == 0)
+                    notificationText = context.getString(R.string.no_people_in_range);
                 updateNotification(context, notificationText);
             } catch (Exception e) {
                 // Silent, if the activity is not on top, never mind the update
