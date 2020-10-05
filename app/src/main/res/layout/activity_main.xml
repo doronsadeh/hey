@@ -20,9 +20,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/people_in_range">
+        app:layout_constraintBottom_toTopOf="@+id/sos_button"
+        app:layout_constraintTop_toBottomOf="@+id/switch_hailing_on_off">
 
         <TextView
             android:id="@+id/hail_distance"
@@ -81,7 +81,7 @@
         android:layout_width="128sp"
         android:layout_height="72sp"
         android:layout_marginBottom="32dp"
-        android:backgroundTint="#A0FF0000"
+        android:backgroundTint="#80FF0000"
         android:text="@string/sos"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"

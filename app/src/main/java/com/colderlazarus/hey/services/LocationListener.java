@@ -1,5 +1,8 @@
 package com.colderlazarus.hey.services;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.preference.PreferenceManager;
 
@@ -107,14 +109,23 @@ public class LocationListener implements android.location.LocationListener {
         hOnLocWork.post(rOnLocRunnable);
     }
 
+    private void updateNotification(Context context, String text) {
+        Notification notification = monitorForegroundService.getNotification(text);
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(MonitorForegroundService.LOCATION_SERVICE_NOTIFICATION_ID, notification);
+    }
+
     public synchronized void hailUsersInRange(Context context, boolean dryrun) {
         try {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MonitorForegroundService.appContext);
             boolean hailing = sharedPreferences.getBoolean(MainActivity.HEY_IS_HAILING, false);
-            if (!hailing)
+            if (!hailing) {
+                updateNotification(context, "");
                 return;
+            }
         } catch (Exception e) {
             Log.e(TAG, "No appContext found yet, disabling hailing for now.");
+            updateNotification(context, "");
             return;
         }
 
@@ -154,11 +165,9 @@ public class LocationListener implements android.location.LocationListener {
         if (null == previousNumPeopleInRange || numPeopleInRange != previousNumPeopleInRange) {
             previousNumPeopleInRange = numPeopleInRange;
             try {
-                // Update view
-                Intent updateNumInRange = new Intent(context, MainActivity.class);
-                updateNumInRange.putExtra(MainActivity.NUM_PEOPLE_IN_RANGE_EXTRA, numPeopleInRange);
-                updateNumInRange.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(updateNumInRange);
+                // Update foreground service notification
+                String notificationText = String.format(context.getString(R.string.hail_in_range_ticker), LocationListener.numPeopleInRange);
+                updateNotification(context, notificationText);
             } catch (Exception e) {
                 // Silent, if the activity is not on top, never mind the update
             }

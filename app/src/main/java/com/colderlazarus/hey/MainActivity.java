@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +20,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -37,7 +40,6 @@ import com.colderlazarus.hey.dynamodb.UsersCache;
 import com.colderlazarus.hey.dynamodb.models.User;
 import com.colderlazarus.hey.dynamodb.models.Users;
 import com.colderlazarus.hey.services.FCMAdapter;
-import com.colderlazarus.hey.services.LocationListener;
 import com.colderlazarus.hey.services.MonitorForegroundService;
 import com.colderlazarus.hey.utils.Utils;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -60,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String HAILING_USER_LOCATION_EXTRA = "hey.HAILING_USER_LOCATION_EXTRA";
     public static final String OPEN_NAV_APP_EXTRA = "hey.OPEN_NAV_APP_EXTRA";
-    public static final String NUM_PEOPLE_IN_RANGE_EXTRA = "hey.NUM_PEOPLE_IN_RANGE_EXTRA";
 
     public static final String HEY_IS_HAILING = "hey.prefs.HEY_IS_HAILING";
 
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean looperPrepared = false;
 
-    private Animation anim = new AlphaAnimation(0.0f, 1.0f);
+    private Animation anim = new AlphaAnimation(0.5f, 1.0f);
 
     private int sirenSoundId;
 
@@ -232,13 +233,6 @@ public class MainActivity extends AppCompatActivity {
                         Utils.sendAnalytics(mFirebaseAnalytics, "hey_started", "User", "analytics");
 
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                        if (sharedPreferences.getBoolean(HEY_IS_HAILING, false)) {
-                            ((ImageView) findViewById(R.id.switch_hailing_on_off)).setImageResource(R.drawable.app_icon);
-                            ((TextView) findViewById(R.id.people_in_range)).setText(String.format(getString(R.string.hail_in_range_ticker), LocationListener.numPeopleInRange));
-                        } else {
-                            ((ImageView) findViewById(R.id.switch_hailing_on_off)).setImageResource(R.drawable.app_icon_off);
-                            ((TextView) findViewById(R.id.people_in_range)).setText(R.string.press_to_start_hailing);
-                        }
 
                         findViewById(R.id.switch_hailing_on_off).setOnClickListener(v -> {
                             // If there is imminent rain or snow, suggest a shelter
@@ -255,20 +249,40 @@ public class MainActivity extends AppCompatActivity {
 
                             if (hailing) {
                                 ((ImageView) v).setImageResource(R.drawable.app_icon);
-                                explanationText.setText(String.format(getString(R.string.hail_in_range_ticker), LocationListener.numPeopleInRange));
-                                anim.setDuration(1500);
-                                anim.setStartOffset(20);
+                                explanationText.setText(String.format(getString(R.string.hailing)));
+                                anim.setDuration(750);
+                                anim.setStartOffset(80);
                                 anim.setRepeatMode(Animation.REVERSE);
                                 anim.setRepeatCount(Animation.INFINITE);
-                                explanationText.startAnimation(anim);
+                                v.startAnimation(anim);
                             } else {
                                 ((ImageView) v).setImageResource(R.drawable.app_icon_off);
                                 anim.cancel();
                                 explanationText.setText(R.string.press_to_start_hailing);
                             }
-
-
                         });
+
+                        // TODO this code should NOT be replicated here and within the onClickListener
+                        if (sharedPreferences.getBoolean(HEY_IS_HAILING, false)) {
+                            ((ImageView) findViewById(R.id.switch_hailing_on_off)).setImageResource(R.drawable.app_icon);
+                            ((TextView) findViewById(R.id.people_in_range)).setText(getString(R.string.hailing));
+                        } else {
+                            ((ImageView) findViewById(R.id.switch_hailing_on_off)).setImageResource(R.drawable.app_icon_off);
+                            ((TextView) findViewById(R.id.people_in_range)).setText(R.string.press_to_start_hailing);
+                        }
+
+                        View imageView = findViewById(R.id.switch_hailing_on_off);
+                        if (sharedPreferences.getBoolean(HEY_IS_HAILING, false)) {
+                            ((ImageView) imageView).setImageResource(R.drawable.app_icon);
+                            anim.setDuration(750);
+                            anim.setStartOffset(80);
+                            anim.setRepeatMode(Animation.REVERSE);
+                            anim.setRepeatCount(Animation.INFINITE);
+                            imageView.startAnimation(anim);
+                        } else {
+                            ((ImageView) imageView).setImageResource(R.drawable.app_icon_off);
+                            anim.cancel();
+                        }
 
                         findViewById(R.id.sos_button).setOnClickListener(v -> {
                             v.performHapticFeedback(
@@ -373,16 +387,7 @@ public class MainActivity extends AppCompatActivity {
                         .show();
 
             }
-
-            int numInRange = intent.getIntExtra(NUM_PEOPLE_IN_RANGE_EXTRA, -1);
-            if (numInRange >= 0) {
-                ((TextView) findViewById(R.id.people_in_range)).setText(String.format(getString(R.string.hail_in_range_ticker), numInRange));
-            }
-
-
-
         }
-
     }
 
     public static boolean isServiceRunningInForeground(Context context, Class<?> serviceClass) {
@@ -390,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
                 if (service.foreground) {
-                    return true;  
+                    return true;
                 }
 
             }

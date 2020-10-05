@@ -50,9 +50,9 @@ public class MonitorForegroundService extends Service {
 
     public static Service monitorForegroundServiceContext = null;
 
-    private static final String CHANNEL_ID = "LocationServiceForegroundServiceChannel";
+    public static final String CHANNEL_ID = "LocationServiceForegroundServiceChannel";
 
-    private static final int LOCATION_SERVICE_NOTIFICATION_ID = Utils.genIntUUID();
+    public static final int LOCATION_SERVICE_NOTIFICATION_ID = Utils.genIntUUID();
 
     private static final Object lastKnownLocationSync = new Object();
 
@@ -166,7 +166,7 @@ public class MonitorForegroundService extends Service {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        startForeground(LOCATION_SERVICE_NOTIFICATION_ID, getNotification());
+        startForeground(LOCATION_SERVICE_NOTIFICATION_ID, getNotification(""));
 
         monitorForegroundServiceContext = this;
 
@@ -254,7 +254,7 @@ public class MonitorForegroundService extends Service {
         }
     }
 
-    private Notification getNotification() {
+    public Notification getNotification(String text) {
         NotificationChannel channel = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             channel = new NotificationChannel(CHANNEL_ID, "Rider360 Channel", NotificationManager.IMPORTANCE_DEFAULT);
@@ -275,8 +275,10 @@ public class MonitorForegroundService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.app_icon)
                 .setContentTitle(getString(R.string.notification_title))
+                .setContentText(text)
                 .setContentIntent(pendingRoueActivityIntent)
                 .addAction(android.R.drawable.ic_menu_close_clear_cancel, getResources().getString(R.string.exit_app), pendingExitIntent)
+                .setOnlyAlertOnce(true)
                 .setAutoCancel(true);
         return builder.build();
     }
