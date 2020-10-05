@@ -124,6 +124,7 @@ public class LocationListener implements android.location.LocationListener {
 
         List<String> userIds = new ArrayList<>();
 
+        int numNotified = 0;
         for (UserCacheSampleAt u : usersInRange) {
             try {
                 if (u.userId.equals(myId))
@@ -135,6 +136,9 @@ public class LocationListener implements android.location.LocationListener {
 
                 User _user = Users.getUser(context, u.userId);
                 if (null != _user) {
+                    // Count both already notified as well as the ones we do now
+                    numNotified++;
+
                     if ((Utils.nowSec() - _user.lastHailedAt) > DONT_NUDGE_TIME_SEC)
                         userIds.add(u.userId);
                 }
@@ -143,7 +147,7 @@ public class LocationListener implements android.location.LocationListener {
             }
         }
 
-        numPeopleInRange = userIds.size();
+        numPeopleInRange = numNotified;
 
         Log.d(TAG, "Num in range=" + numPeopleInRange + ", previously=" + previousNumPeopleInRange);
 
