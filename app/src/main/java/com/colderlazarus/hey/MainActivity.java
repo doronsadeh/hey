@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
                 if (service.foreground) {
-                    return true;
+                    return true;  
                 }
 
             }
