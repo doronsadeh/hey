@@ -473,7 +473,7 @@ public class Utils {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
                 // First release the previous one
-                soundPool.play(sampleId, 0.99f, 0.99f, 1, 3, 1);
+                soundPool.play(sampleId, 0.99f, 0.99f, 1, 2, 1);
             }
         });
 
