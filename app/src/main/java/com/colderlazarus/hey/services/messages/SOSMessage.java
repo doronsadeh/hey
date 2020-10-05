@@ -59,7 +59,7 @@ public class SOSMessage extends MessageBase {
 
     @SuppressLint("ApplySharedPref")
     @Override
-    public void receiveMessage(Context context, RemoteMessage remoteMessage) {
+    public void receiveMessage(Context context, RemoteMessage remoteMessage) { 
         Map<String, String> data = remoteMessage.getData();
 
         String msgType = data.get(MSG_TYPE);
