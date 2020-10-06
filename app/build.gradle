@@ -7,7 +7,7 @@ android {
     buildToolsVersion "29.0.3"
 
     lintOptions {
-        checkReleaseBuilds true
+        checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
         abortOnError true
@@ -17,8 +17,8 @@ android {
         applicationId "com.colderlazarus.hey"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 10
-        versionName "1.2.7"
+        versionCode 12
+        versionName "1.2.9"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

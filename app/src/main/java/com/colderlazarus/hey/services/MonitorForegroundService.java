@@ -31,6 +31,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static com.colderlazarus.hey.MainActivity.HEY_IS_HAILING;
 import static com.colderlazarus.hey.utils.Utils.fakeLocation;
 
 public class MonitorForegroundService extends Service {
@@ -225,6 +226,12 @@ public class MonitorForegroundService extends Service {
             }
         }
 
+        // TODO Reset hailing state
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(HEY_IS_HAILING, false);
+        editor.commit();
+
         // Clear all cached data
         staticLLocationScheduler.shutdown();
     }
@@ -242,7 +249,7 @@ public class MonitorForegroundService extends Service {
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_MILLISECONDS, MIN_METERS, mLocationListener);
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            if (sharedPreferences.getBoolean(MainActivity.HEY_IS_HAILING, false)) {
+            if (sharedPreferences.getBoolean(HEY_IS_HAILING, false)) {
                 // Make sure the number of users in area is up to date, if we are in hail mode
                 mLocationListener.hailUsersInRange(getApplicationContext(), true);
             }

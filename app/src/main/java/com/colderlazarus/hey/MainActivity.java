@@ -69,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Animation anim = new AlphaAnimation(0.5f, 1.0f);
 
-    private int sirenSoundId;
-
     private void validatePermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
@@ -465,7 +463,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-                    sirenSoundId = Utils.soundPool.load(context, R.raw.calling_police, 1);
+                    Utils.soundPool.load(context, R.raw.calling_police, 1);
                 })
                 .setNegativeButton(R.string.no, (dialog, which) -> {
                     // Nothing

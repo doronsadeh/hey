@@ -21,8 +21,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
@@ -69,10 +67,6 @@ public class Utils {
     private static final int TAG_CODE_LOCATION_PERMISSION = Utils.genIntUUID();
 
     public static SoundPool soundPool = null;
-
-    private static boolean looperPrepared = false;
-
-    private static int sirenSoundId;
 
     public static int genIntUUID() {
         return abs((int) (UUID.randomUUID().getLeastSignificantBits()) & 0xFFFF);
@@ -429,18 +423,32 @@ public class Utils {
         soundPool = new SoundPool.Builder()
                 .setAudioAttributes(attributes)
                 .build();
-
-        // Add sounds here
-        sirenSoundId = soundPool.load(context, R.raw.siren, 1);
     }
 
     @SuppressWarnings("deprecation")
     public static synchronized void createOldSoundPool(Context context) {
         soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
-
-        // Add sounds here
-        sirenSoundId = soundPool.load(context, R.raw.siren, 1);
     }
+
+    public static void Welcome(Context context) {
+        if (null == soundPool) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                Utils.createNewSoundPool(context);
+            else
+                Utils.createOldSoundPool(context);
+        }
+
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                // First release the previous one
+                soundPool.play(sampleId, 0.75f, 0.75f, 1, 0, 1);
+            }
+        });
+
+        soundPool.load(context, R.raw.welcome, 1);
+    }
+
 
     public static void Siren(Context context) {
         if (null == soundPool) {
@@ -458,7 +466,7 @@ public class Utils {
             }
         });
 
-        sirenSoundId = soundPool.load(context, R.raw.siren, 1);
+        soundPool.load(context, R.raw.siren, 1);
     }
 
     public static void Come(Context context) {
@@ -477,7 +485,7 @@ public class Utils {
             }
         });
 
-        sirenSoundId = soundPool.load(context, R.raw.come, 1);
+        soundPool.load(context, R.raw.come, 1);
     }
 
     public static void CallPolice(Context context) {
