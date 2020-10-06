@@ -35,4 +35,6 @@
     <string name="nav_to_distress_location_format_str">קריאת מצוקה %d מטרים ממיקומך. האם להענות לקריאה?</string>
     <string name="hailing">שולח הזמנות לא.נשים בטווח</string>
     <string name="no_people_in_range">ממתין לא.נשים זמינים</string>
+    <string name="splash_title">Hey!</string>
+    <string name="splash_subtitle">אין לי ארץ אחרת</string>
 </resources>

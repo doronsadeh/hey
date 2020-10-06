@@ -4,8 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -98,12 +96,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
 
         Utils.sendAnalytics(mFirebaseAnalytics, "main_activity_create", "main_activity", "analytics");
@@ -138,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         if (null == MonitorForegroundService.randomRecyclingIdentity)
             MonitorForegroundService.randomRecyclingIdentity = Utils.genStringUUID();
 
-        Activity aContext = this;
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnFailureListener(command -> {
                     Log.e(TAG, "Failed registering Firebase: " + command);
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), R.string.not_compatiable_with_your_device, Toast.LENGTH_LONG).show();
                     }
 
-                    aContext.finish();
+                    MainActivity.this.finish();
                     return;
                 })
                 .addOnSuccessListener(this, instanceIdResult -> {
@@ -415,13 +416,12 @@ public class MainActivity extends AppCompatActivity {
 
         Utils.sendAnalytics(mFirebaseAnalytics, "start_foreground_service", "User", "analytics");
 
-        Activity aContext = this;
         Handler h = new Handler();
         Runnable r = () -> {
             boolean isSrvRunningFg = isServiceRunningInForeground(getApplicationContext(), MonitorForegroundService.class);
             if (!isSrvRunningFg) {
                 Toast.makeText(getApplicationContext(), R.string.monitor_service_is_not_running, Toast.LENGTH_LONG).show();
-                aContext.finish();
+                MainActivity.this.finish();
                 return;
             }
         };
