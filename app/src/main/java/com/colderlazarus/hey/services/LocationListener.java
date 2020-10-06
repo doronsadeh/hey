@@ -120,12 +120,12 @@ public class LocationListener implements android.location.LocationListener {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MonitorForegroundService.appContext);
             boolean hailing = sharedPreferences.getBoolean(MainActivity.HEY_IS_HAILING, false);
             if (!hailing) {
-                updateNotification(context, "");
+                updateNotification(context, context.getString(R.string.tap_to_open));
                 return;
             }
         } catch (Exception e) {
             Log.e(TAG, "No appContext found yet, disabling hailing for now.");
-            updateNotification(context, "");
+            updateNotification(context, context.getString(R.string.tap_to_open));
             return;
         }
 

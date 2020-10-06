@@ -25,5 +25,6 @@
     <string name="no_people_in_range">ממתין לא.נשים זמינים</string>
     <string name="splash_title">Hey!</string>
     <string name="splash_subtitle">אין לי ארץ אחרת</string>
+    <string name="tap_to_open">גע כדי לפתוח את האפליקציה</string>
 
 </resources>
