@@ -258,6 +258,7 @@ public class MonitorForegroundService extends Service {
         NotificationChannel channel = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             channel = new NotificationChannel(CHANNEL_ID, "Rider360 Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setShowBadge(true);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
         }
@@ -278,6 +279,7 @@ public class MonitorForegroundService extends Service {
                 .setContentText(text)
                 .setContentIntent(pendingRoueActivityIntent)
                 .addAction(android.R.drawable.ic_menu_close_clear_cancel, getResources().getString(R.string.exit_app), pendingExitIntent)
+                .setNumber(LocationListener.numPeopleInRange)
                 .setOnlyAlertOnce(true)
                 .setAutoCancel(true);
         return builder.build();
