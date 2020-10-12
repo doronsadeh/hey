@@ -17,8 +17,8 @@ android {
         applicationId "com.colderlazarus.hey"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 12
-        versionName "1.2.9"
+        versionCode 13
+        versionName "1.3.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
