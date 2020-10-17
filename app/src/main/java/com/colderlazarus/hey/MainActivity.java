@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                     String newToken = instanceIdResult.getToken();
                     getPreferences(Context.MODE_PRIVATE).edit().putString("fb", newToken).apply();
 
-                    Utils.sendAnalytics(mFirebaseAnalytics, "new_token", "route_planning", "analytics");
+                    Utils.sendAnalytics(mFirebaseAnalytics, "new_token", "main_activity", "analytics");
 
                     // Test the token, and if fails DeleteInstanceId and restart
                     List<String> _tokenAsList = new ArrayList<>();
@@ -478,7 +478,7 @@ public class MainActivity extends AppCompatActivity {
         Intent serviceIntentMonitor = new Intent(this, MonitorForegroundService.class);
         stopService(serviceIntentMonitor);
 
-        Utils.sendAnalytics(mFirebaseAnalytics, "stop_foreground_service", "route_planning", "analytics");
+        Utils.sendAnalytics(mFirebaseAnalytics, "stop_foreground_service", "main_activity", "analytics");
     }
 
     private void phonePolice100(Context context) {
