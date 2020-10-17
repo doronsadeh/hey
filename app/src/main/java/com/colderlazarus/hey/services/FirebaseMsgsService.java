@@ -19,8 +19,8 @@ public class FirebaseMsgsService extends FirebaseMessagingService {
 
     private static final String TAG = "hey.FMsgsService";
 
-    // If message is older than 30 seconds ago, it is stale and irrelevant
-    private static final long MAX_ALLOWED_FCM_MSG_AGE_SEC = 60L;
+    // If message is older than 5 minutes ago, it is stale and irrelevant
+    private static final long MAX_ALLOWED_FCM_MSG_AGE_SEC = 5L * 60L;
 
     private static final String SENT_AT_EPOCH_SEC = "hey.SENT_AT_EPOCH_SEC";
 

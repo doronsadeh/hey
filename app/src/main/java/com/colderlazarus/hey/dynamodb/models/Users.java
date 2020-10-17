@@ -19,7 +19,7 @@ public class Users {
     public static final String DYNAMODB_TABLE = "hey_users";
 
     // Users are aged every 24 hours
-    private static final long TTL_AGING_EPOCH_SEC = 24 * 60 * 60;
+    private static final long TTL_AGING_EPOCH_SEC = 24L * 60L * 60L;
 
     public static User getUser(Context context, String _userId) {
         // If no DB make one

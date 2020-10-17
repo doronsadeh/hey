@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class User {
 
-    private static final String TAG = "hey.Rider";
+    private static final String TAG = "hey.User";
 
     public static final String USER_ID = "user_id";
     public static final String TIMESTAMP = "timestamp";

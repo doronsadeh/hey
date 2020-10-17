@@ -203,11 +203,11 @@ public class MonitorForegroundService extends Service {
                                             4 * LOCATION_SAMPLE_RATE_SEC
                                     );
 
-                                    mLocationListener.hailUsersInRange(getApplicationContext(), false);
+                                    mLocationListener.hailUsersInRange(MonitorForegroundService.this.getApplicationContext(), false);
                                 }
                             }
                         } catch (Exception e) {
-                            Log.e(TAG, "Could not update rider's cache for rider ID " + myId + " in standstill mode due to: " + e.getMessage());
+                            Log.e(TAG, "Could not update user's cache for user ID " + myId + " in standstill mode due to: " + e.getMessage());
                         }
                     }
                 }, 0, LOCATION_SAMPLE_RATE_SEC, TimeUnit.SECONDS);
@@ -251,7 +251,7 @@ public class MonitorForegroundService extends Service {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             if (sharedPreferences.getBoolean(HEY_IS_HAILING, false)) {
                 // Make sure the number of users in area is up to date, if we are in hail mode
-                mLocationListener.hailUsersInRange(getApplicationContext(), true);
+                mLocationListener.hailUsersInRange(MonitorForegroundService.this.getApplicationContext(), true);
             }
 
         } catch (SecurityException ex) {
