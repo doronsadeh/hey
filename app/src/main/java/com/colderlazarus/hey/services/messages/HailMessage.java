@@ -120,6 +120,9 @@ public class HailMessage extends MessageBase {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Hey Hailing Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[0]);
+            channel.setImportance(NotificationManager.IMPORTANCE_HIGH);
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
             @SuppressLint("StringFormatMatches") Notification.Builder builder = new Notification.Builder(context, CHANNEL_ID)
@@ -136,6 +139,8 @@ public class HailMessage extends MessageBase {
                     .setContentTitle(context.getString(R.string.you_are_being_hailed))
                     .setContentText(String.format(context.getString(R.string.hail_notification_format_string), metersAway, Utils.epochToLocalTime(epochTimeSentAt)))
                     .setContentIntent(pIntent)
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .setVibrate(new long[0])
                     .setAutoCancel(true);
             notificationManager.notify(Utils.genIntUUID(), builder.build());
         }
