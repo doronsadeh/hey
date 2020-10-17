@@ -9,11 +9,13 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.multidex.BuildConfig;
 import androidx.preference.PreferenceManager;
 
 import com.colderlazarus.hey.MainActivity;
@@ -26,6 +28,7 @@ import com.colderlazarus.hey.services.messages.HailMessage;
 import com.colderlazarus.hey.services.messages.SOSMessage;
 import com.colderlazarus.hey.utils.Utils;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +52,8 @@ public class LocationListener implements android.location.LocationListener {
 
     public static final long DONT_NUDGE_TIME_SEC = 5 * 60;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     private final MonitorForegroundService monitorForegroundService;
 
     private final SoundPool soundPool;
@@ -63,6 +68,7 @@ public class LocationListener implements android.location.LocationListener {
     LocationListener(MonitorForegroundService monitorForegroundService, String provider) {
         this.monitorForegroundService = monitorForegroundService;
         mLastLocation = new Location(provider);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(monitorForegroundService.getApplicationContext());
         soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
     }
 
@@ -76,6 +82,13 @@ public class LocationListener implements android.location.LocationListener {
                 suspendingLocationListener = true;
             }
             return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            if (location.isFromMockProvider()) {
+                Log.w(TAG, "Mock location found, possible attack");
+                Utils.sendAnalytics(mFirebaseAnalytics, "mock_location_detected", "location_listener", "analytics");
+            }
         }
 
         // If there is a good connection and we were in suspension, notify the user we are back on line

@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Build;
@@ -16,6 +18,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
 import com.colderlazarus.hey.MainActivity;
+import com.colderlazarus.hey.MapsActivity;
 import com.colderlazarus.hey.R;
 import com.colderlazarus.hey.dynamodb.models.User;
 import com.colderlazarus.hey.dynamodb.models.Users;
@@ -35,6 +38,7 @@ import java.util.Objects;
 
 import static com.colderlazarus.hey.services.LocationListener.HAILING_USER_LOCATION;
 import static com.colderlazarus.hey.services.LocationListener.HAIL_SENT_AT;
+import static com.colderlazarus.hey.services.LocationListener.numPeopleInRange;
 import static com.colderlazarus.hey.utils.Utils.getLastKnownLocation;
 import static java.lang.Math.round;
 
@@ -109,14 +113,20 @@ public class HailMessage extends MessageBase {
         if ((Utils.nowSec() - epochTimeSentAt) > MAX_ALLOWED_HAIL_DELTA_SEC)
             return;
 
+        Intent notificationIntent = new Intent(context, MapsActivity.class);
+        notificationIntent.putExtra(MainActivity.HAILING_USER_LOCATION_EXTRA, hailingUserLocation);
+        notificationIntent.putExtra(MainActivity.NUM_HAILERS_EXTRA, numPeopleInRange);
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Hey Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Hey Hailing Channel", NotificationManager.IMPORTANCE_DEFAULT);
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
             @SuppressLint("StringFormatMatches") Notification.Builder builder = new Notification.Builder(context, CHANNEL_ID)
                     .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle(context.getString(R.string.you_are_being_hailed))
                     .setContentText(String.format(context.getString(R.string.hail_notification_format_string), metersAway, Utils.epochToLocalTime(epochTimeSentAt)))
+                    .setContentIntent(pIntent)
                     .setAutoCancel(true);
             notificationManager.notify(Utils.genIntUUID(), builder.build());
         } else {
@@ -125,6 +135,7 @@ public class HailMessage extends MessageBase {
                     .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle(context.getString(R.string.you_are_being_hailed))
                     .setContentText(String.format(context.getString(R.string.hail_notification_format_string), metersAway, Utils.epochToLocalTime(epochTimeSentAt)))
+                    .setContentIntent(pIntent)
                     .setAutoCancel(true);
             notificationManager.notify(Utils.genIntUUID(), builder.build());
         }

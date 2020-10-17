@@ -201,19 +201,20 @@ public class Utils {
         return (l.getLongitude() == 0.0) && (l.getLatitude() == 0.0) && (l.getBearing() == 0) && (l.getSpeed() == 0.0);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public static synchronized Location getLastKnownLoaction(Activity context) {
         LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         Location utilLocation;
 
-        if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(context, new String[]{
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                    TAG_CODE_LOCATION_PERMISSION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(context, new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                        TAG_CODE_LOCATION_PERMISSION);
+            }
         }
 
         utilLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);

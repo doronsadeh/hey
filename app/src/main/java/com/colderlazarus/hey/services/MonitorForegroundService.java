@@ -264,16 +264,16 @@ public class MonitorForegroundService extends Service {
     public Notification getNotification(String text) {
         NotificationChannel channel = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            channel = new NotificationChannel(CHANNEL_ID, "Rider360 Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            channel = new NotificationChannel(CHANNEL_ID, "Hey Monitor Channel", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setShowBadge(true);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
         }
 
-        Intent roueActivityIntent = new Intent(this, MainActivity.class);
-        roueActivityIntent.setAction(REOPEN_ACTIVITY_ACTION);
-        roueActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingRoueActivityIntent = PendingIntent.getActivity(getApplicationContext(), 0, roueActivityIntent, 0);
+        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        mainActivityIntent.setAction(REOPEN_ACTIVITY_ACTION);
+        mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingRoueActivityIntent = PendingIntent.getActivity(getApplicationContext(), 0, mainActivityIntent, 0);
 
         Intent intentExit = new Intent(this, MainActivity.class);
         intentExit.setAction(EXIT_APP_ACTION);

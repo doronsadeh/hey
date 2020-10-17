@@ -31,6 +31,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
@@ -53,15 +54,20 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "hey.MainActivity";
 
+    public static final String GOOGLE_PLAY_APP_URL = "https://play.google.com/store/apps/details?id=com.colderlazarus.hey";
+
     private static final int TAG_CODE_MANDATORY_PERMISSIONS = Utils.genIntUUID();
 
     public static final String EXIT_APP_ACTION = "hey.EXIT_APP_ACTION";
     public static final String CALL_POLICE_ACTION = "hey.CALL_POLICE_ACTION";
 
     public static final String HAILING_USER_LOCATION_EXTRA = "hey.HAILING_USER_LOCATION_EXTRA";
+    public static final String NUM_HAILERS_EXTRA = "hey.NUM_HAILERS_EXTRA";
     public static final String OPEN_NAV_APP_EXTRA = "hey.OPEN_NAV_APP_EXTRA";
 
     public static final String HEY_IS_HAILING = "hey.prefs.HEY_IS_HAILING";
+
+    private static final String SHOW_SHARING_NUDGE = "hey.show_sharing_nudge";
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -234,7 +240,6 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
                         findViewById(R.id.switch_hailing_on_off).setOnClickListener(v -> {
-                            // If there is imminent rain or snow, suggest a shelter
                             boolean hailing = sharedPreferences.getBoolean(HEY_IS_HAILING, false);
 
                             // Toggle
@@ -254,6 +259,48 @@ public class MainActivity extends AppCompatActivity {
                                 anim.setRepeatMode(Animation.REVERSE);
                                 anim.setRepeatCount(Animation.INFINITE);
                                 v.startAnimation(anim);
+
+                                // Save in prefs and allow 3 times
+                                int numberOfSharingNudges = sharedPreferences.getInt(SHOW_SHARING_NUDGE, 0);
+                                if (numberOfSharingNudges < 3) {
+
+                                    editor.putInt(SHOW_SHARING_NUDGE, ++numberOfSharingNudges);
+                                    editor.commit();
+
+                                    new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme))
+                                            .setCancelable(false)
+                                            .setMessage(getResources().getString(R.string.share_with_five))
+                                            .setPositiveButton(R.string.yes_want_help_sharing, (dialog, whichButton) -> {
+
+                                                // Suggest to share app with friend. Launch sharing link to Rider360 on Google play.
+                                                String shareSubject = getString(R.string.share_app_message);
+
+                                                ShareCompat.IntentBuilder intentBuilder = ShareCompat.IntentBuilder.from(this);
+                                                Intent shareIntent = intentBuilder
+                                                        .setType("text/plain")
+                                                        .setSubject(shareSubject)
+                                                        .setText(String.format("%s %s", shareSubject, GOOGLE_PLAY_APP_URL))
+                                                        .setChooserTitle("Share via")
+                                                        .createChooserIntent();
+
+                                                if (shareIntent.resolveActivity(getPackageManager()) != null) {
+                                                    startActivity(shareIntent);
+                                                }
+
+                                                // S.he shared, stop nudging
+                                                editor.putInt(SHOW_SHARING_NUDGE, 100);
+                                                editor.commit();
+
+                                            })
+                                            .setNegativeButton(R.string.no_dont_want_to_share, (dialog, which) -> {
+                                                // Nothing
+                                            })
+                                            .setOnCancelListener(dialog -> {
+                                                // Nothing
+                                            })
+                                            .show();
+                                }
+
                             } else {
                                 ((ImageView) v).setImageResource(R.drawable.app_icon_off);
                                 anim.cancel();

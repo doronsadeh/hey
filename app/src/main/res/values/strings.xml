@@ -38,4 +38,10 @@
     <string name="splash_title">Hey!</string>
     <string name="splash_subtitle">אין לי ארץ אחרת</string>
     <string name="tap_to_open">גע כדי לפתוח את האפליקציה</string>
+    <string name="title_activity_maps">מפת הפגנות</string>
+    <string name="protest_location">אזור ההפגנה</string>
+    <string name="share_with_five">כדי שננצח, אנחנו צריכים את עזרתך. שתף את האפליקציה עם חמישה חברים קרובים. ובואו להפגין יחד.</string>
+    <string name="share_app_message">בואו! להציל את הדמוקרטיה הישראלית</string>
+    <string name="yes_want_help_sharing">כן, רוצה לעזור</string>
+    <string name="no_dont_want_to_share">לא רוצה לעזור</string>
 </resources>

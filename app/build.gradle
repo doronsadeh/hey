@@ -3,22 +3,31 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    signingConfigs {
+        release {
+            storeFile file('/home/dorons/consulting/private/hey/keys/hey.keys')
+            storePassword '780Shekel!'
+            keyPassword '780Shekel!'
+            keyAlias 'key0'
+        }
+    }
 
     lintOptions {
-        checkReleaseBuilds true
+        checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
-        abortOnError true
+        abortOnError false
     }
+
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.colderlazarus.hey"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 13
-        versionName "1.3.0"
+        versionCode 14
+        versionName "1.3.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,6 +50,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
