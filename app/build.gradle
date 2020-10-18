@@ -3,6 +3,20 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
+    signingConfigs {
+        DEBUG {
+            storeFile file('/home/dorons/.android/debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+        RELEASE {
+            storeFile file('/home/dorons/consulting/private/hey/keys/hey.keys')
+            storePassword '780Shekel!'
+            keyAlias 'key0'
+            keyPassword '780Shekel!'
+        }
+    }
     lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -36,6 +50,15 @@ android {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/INDEX.LIST'
+    }
+    flavorDimensions 'PRODUCTION'
+    productFlavors {
+        INTERNAL {
+            dimension 'PRODUCTION'
+        }
+        PUBLISHED {
+            dimension 'PRODUCTION'
+        }
     }
 }
 
