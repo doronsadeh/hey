@@ -264,8 +264,8 @@ public class MonitorForegroundService extends Service {
     public Notification getNotification(String text) {
         NotificationChannel channel = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            channel = new NotificationChannel(CHANNEL_ID, "Hey Monitor Channel", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setShowBadge(true);
+            channel = new NotificationChannel(CHANNEL_ID, "General Messages Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setImportance(NotificationManager.IMPORTANCE_LOW);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
         }
@@ -288,6 +288,8 @@ public class MonitorForegroundService extends Service {
                 .addAction(android.R.drawable.ic_menu_close_clear_cancel, getResources().getString(R.string.exit_app), pendingExitIntent)
                 .setNumber(LocationListener.numPeopleInRange)
                 .setOnlyAlertOnce(true)
+                .setPriority(Notification.PRIORITY_LOW)
+                .setVibrate(new long[0])
                 .setAutoCancel(true);
         return builder.build();
     }

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,7 +26,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
@@ -66,6 +67,8 @@ public class Utils {
 
     private static final int TAG_CODE_LOCATION_PERMISSION = Utils.genIntUUID();
 
+    private static final String NOTIFICATIONS_SETTINGS_DONE = "hey.NOTIFICATIONS_SETTINGS_DONE";
+
     public static SoundPool soundPool = null;
 
     public static int genIntUUID() {
@@ -81,6 +84,36 @@ public class Utils {
         l.setLatitude(latLng.latitude);
         l.setLongitude(latLng.longitude);
         return l;
+    }
+
+    public static void notificationsSettingsDialog(Context context) {
+        // TODO do this only on thr first time, with an explnation
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean notificationsSettingsDone = sharedPreferences.getBoolean(NOTIFICATIONS_SETTINGS_DONE, false);
+        if (!notificationsSettingsDone) {
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(NOTIFICATIONS_SETTINGS_DONE, true);
+            editor.commit();
+
+            new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AppTheme))
+                    .setCancelable(false)
+                    .setMessage(context.getResources().getString(R.string.notifications_initial_settings))
+                    .setPositiveButton(R.string.yes_take_me_to_notification_settings, (dialog, whichButton) -> {
+                        Intent notificationsSettingsIntent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                        notificationsSettingsIntent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
+                        context.startActivity(notificationsSettingsIntent);
+
+                    })
+                    .setNegativeButton(R.string.no_dismiss_notifications_settings, (dialog, which) -> {
+                        // Nothing
+                    })
+                    .setOnCancelListener(dialog -> {
+                        // Nothing
+                    })
+                    .show();
+        }
+
     }
 
     public static int getVersionCode(Context context) {

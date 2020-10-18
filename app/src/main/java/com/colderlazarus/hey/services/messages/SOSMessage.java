@@ -59,7 +59,7 @@ public class SOSMessage extends MessageBase {
 
     @SuppressLint("ApplySharedPref")
     @Override
-    public void receiveMessage(Context context, RemoteMessage remoteMessage) { 
+    public void receiveMessage(Context context, RemoteMessage remoteMessage) {
         Map<String, String> data = remoteMessage.getData();
 
         String msgType = data.get(MSG_TYPE);
@@ -101,10 +101,11 @@ public class SOSMessage extends MessageBase {
         PendingIntent pIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "SOS Channel", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "SOS Messages Channel", NotificationManager.IMPORTANCE_HIGH);
             channel.enableVibration(true);
             channel.setVibrationPattern(new long[0]);
             channel.setImportance(NotificationManager.IMPORTANCE_HIGH);
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
             @SuppressLint("StringFormatMatches") Notification.Builder builder = new Notification.Builder(context, CHANNEL_ID)

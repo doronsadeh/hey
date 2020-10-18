@@ -44,4 +44,7 @@
     <string name="share_app_message">בואו! להציל את הדמוקרטיה הישראלית</string>
     <string name="yes_want_help_sharing">כן, רוצה לעזור</string>
     <string name="no_dont_want_to_share">לא רוצה לעזור</string>
+    <string name="notifications_initial_settings">האם לאפשר להודעות להופיע בראש המסך?\n\nבאפשרותך לקבוע את ההגדרות לכל אחד מערוצי ההודעות בנפרד בלחיצה על שם הערוץ ועל Importance.</string>
+    <string name="yes_take_me_to_notification_settings">כן, קח אותי להגדרות</string>
+    <string name="no_dismiss_notifications_settings">לא, תשאיר ככה</string>
 </resources>
