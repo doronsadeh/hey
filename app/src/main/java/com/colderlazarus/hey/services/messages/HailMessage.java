@@ -52,11 +52,8 @@ public class HailMessage extends MessageBase {
 
     public static final long MAX_ALLOWED_HAIL_DELTA_SEC = 30L * 60L;
 
-    private NotificationChannel notificationsChannel = null;
-
     public HailMessage(Context context) {
         super();
-        notificationsChannel = createNotificationChannel(context, CHANNEL_ID);
     }
 
     @SuppressLint("ApplySharedPref")

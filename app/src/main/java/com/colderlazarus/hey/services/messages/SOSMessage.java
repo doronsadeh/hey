@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.media.SoundPool;
 import android.os.Build;
 import android.widget.Toast;
 
@@ -47,14 +46,8 @@ public class SOSMessage extends MessageBase {
 
     public static final long MAX_ALLOWED_SOS_DELTA_SEC = 30L * 60L;
 
-    private NotificationChannel notificationsChannel = null;
-
-    private SoundPool soundPool;
-    private int soundId;
-
     public SOSMessage(Context context) {
         super();
-        notificationsChannel = createNotificationChannel(context, CHANNEL_ID);
     }
 
     @SuppressLint("ApplySharedPref")

@@ -104,7 +104,8 @@ public class DynamoDBAPI {
         executor.execute(fTask);
 
         try {
-            return fTask.get(DYNAMODB_GET_ITEM_TIMEOUT_SEC, TimeUnit.SECONDS);
+            List<Document> ld = fTask.get(DYNAMODB_GET_ITEM_TIMEOUT_SEC, TimeUnit.SECONDS);
+            return ld;
         } catch (ExecutionException e) {
             Log.e(TAG, "Problem executing DynamoDB query: " + e.getMessage());
         } catch (InterruptedException e) {
