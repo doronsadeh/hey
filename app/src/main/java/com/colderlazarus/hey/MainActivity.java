@@ -239,6 +239,12 @@ public class MainActivity extends AppCompatActivity {
 
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+                        findViewById(R.id.shutdown).setOnClickListener(v -> {
+                            Utils.sendAnalytics(mFirebaseAnalytics, "exit_app_from_main", "main_activity", "analytics");
+                            stopServices();
+                            finish();
+                        });
+
                         findViewById(R.id.switch_hailing_on_off).setOnClickListener(v -> {
                             boolean hailing = sharedPreferences.getBoolean(HEY_IS_HAILING, false);
 
